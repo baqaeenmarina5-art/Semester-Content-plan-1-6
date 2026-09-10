@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Content Analysis Builder — Grades 1–6</title>
+<style>
+  :root{
+    --navy:#1c3a5e;
+    --navy-deep:#12283f;
+    --slate:#3f5872;
+    --paper:#f7f5f0;
+    --card:#ffffff;
+    --line:#d9d3c4;
+    --accent:#b5651d;
+    --accent-soft:#f1e3d3;
+    --ink:#20242a;
+    --muted:#6b7280;
+    --good:#2f6d4f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: "Iowan Old Style","Palatino Linotype", Georgia, serif;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  .topbar{
+    background:var(--navy-deep);
+    color:#f2ede2;
+    padding:22px 28px 20px;
+    border-bottom:4px solid var(--accent);
+  }
+  .topbar h1{
+    margin:0 0 4px;
+    font-size:1.55rem;
+    font-weight:600;
+    letter-spacing:.01em;
+  }
+  .topbar p{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.85rem;
+    color:#c9d2de;
+  }
+  .layout{
+    display:flex;
+    min-height:calc(100vh - 92px);
+  }
+  nav.grades{
+    width:150px;
+    flex:0 0 150px;
+    background:var(--navy);
+    padding:18px 0;
+  }
+  nav.grades button{
+    display:block;
+    width:100%;
+    text-align:left;
+    padding:12px 20px;
+    background:none;
+    border:none;
+    border-left:4px solid transparent;
+    color:#dbe4f0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.92rem;
+    cursor:pointer;
+    transition:background .15s;
+  }
+  nav.grades button:hover{ background:rgba(255,255,255,.08); }
+  nav.grades button.active{
+    background:var(--paper);
+    color:var(--navy-deep);
+    font-weight:700;
+    border-left:4px solid var(--accent);
+  }
+  main{
+    flex:1;
+    padding:26px 34px 60px;
+    max-width:1180px;
+  }
+  .grade-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-bottom:18px;
+    padding-bottom:14px;
+    border-bottom:2px solid var(--line);
+  }
+  .grade-fields{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  }
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+  }
+  .field label{
+    font-size:.68rem;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--muted);
+  }
+  .field input{
+    font-family: inherit;
+    font-size:.95rem;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:6px 8px;
+    background:var(--card);
+    color:var(--ink);
+    min-width:150px;
+  }
+  .field input:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  button.btn{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.83rem;
+    font-weight:600;
+    padding:9px 14px;
+    border-radius:5px;
+    border:1px solid var(--navy);
+    background:var(--navy);
+    color:#fff;
+    cursor:pointer;
+  }
+  button.btn.secondary{
+    background:var(--card);
+    color:var(--navy);
+  }
+  button.btn.ghost{
+    background:transparent;
+    color:var(--slate);
+    border-color:var(--line);
+  }
+  button.btn:hover{ opacity:.88; }
+  .unit-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    margin-bottom:22px;
+    overflow:hidden;
+  }
+  .unit-bar{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+    background:var(--accent-soft);
+    padding:10px 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  }
+  .unit-bar .tag{
+    font-weight:700;
+    color:var(--accent);
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
+  .unit-bar input.title{
+    flex:1 1 260px;
+    font-family: inherit;
+    font-size:.95rem;
+    font-weight:600;
+    border:1px solid transparent;
+    background:transparent;
+    padding:5px 6px;
+    border-radius:4px;
+    color:var(--ink);
+  }
+  .unit-bar input.title:focus{ background:#fff; border-color:var(--line); outline:none; }
+  .unit-bar input.pages{
+    width:150px;
+    font-family: inherit;
+    font-size:.82rem;
+    border:1px solid var(--line);
+    background:#fff;
+    padding:5px 7px;
+    border-radius:4px;
+    color:var(--slate);
+  }
+  .unit-bar button.remove{
+    background:none;
+    border:none;
+    color:#a44;
+    cursor:pointer;
+    font-size:.78rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  }
+  table.analysis{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+  }
+  table.analysis th{
+    background:#eef1f5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--slate);
+    text-align:left;
+    padding:8px 10px;
+    border:1px solid var(--line);
+  }
+  table.analysis td{
+    border:1px solid var(--line);
+    vertical-align:top;
+    padding:0;
+  }
+  table.analysis textarea{
+    width:100%;
+    min-height:100px;
+    border:none;
+    resize:vertical;
+    padding:9px 10px;
+    font-family: "Iowan Old Style", Georgia, serif;
+    font-size:.87rem;
+    line-height:1.4;
+    color:var(--ink);
+    background:transparent;
+  }
+  table.analysis textarea:focus{ outline:2px solid var(--accent); outline-offset:-2px; background:#fffdf8; }
+  .toolbar-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:6px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .hint{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.78rem;
+    color:var(--muted);
+  }
+  .toast{
+    position:fixed;
+    bottom:22px;
+    right:22px;
+    background:var(--good);
+    color:#fff;
+    padding:10px 16px;
+    border-radius:6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.85rem;
+    box-shadow:0 4px 14px rgba(0,0,0,.2);
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity .2s, transform .2s;
+    pointer-events:none;
+  }
+  .toast.show{ opacity:1; transform:translateY(0); }
+  @media (max-width:760px){
+    .layout{ flex-direction:column; }
+    nav.grades{ width:100%; flex:none; display:flex; overflow-x:auto; padding:8px; }
+    nav.grades button{ border-left:none; border-bottom:3px solid transparent; white-space:nowrap; }
+    nav.grades button.active{ border-bottom-color:var(--accent); }
+    main{ padding:18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>Content Analysis Builder</h1>
+  <p>English Language Curriculum · Grades 1–6 · First Semester · Editable, downloadable as Word</p>
+</div>
+
+<div class="layout">
+  <nav class="grades" id="gradeNav"></nav>
+  <main>
+    <div class="grade-head">
+      <div class="grade-fields" id="gradeFields"></div>
+      <div class="actions">
+        <button class="btn secondary" id="resetGradeBtn">Reset this grade</button>
+        <button class="btn" id="downloadGradeBtn">Download this grade (.doc)</button>
+      </div>
+    </div>
+
+    <div id="unitsContainer"></div>
+
+    <div class="toolbar-bottom">
+      <button class="btn ghost" id="addUnitBtn">+ Add unit</button>
+      <div class="actions">
+        <span class="hint">Everything below is editable — type directly into any cell.</span>
+        <button class="btn secondary" id="downloadAllBtn">Download all 6 grades (.doc)</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- Source data, transcribed from the six "Content Analysis" files ---------- */
+const ORIGINAL_DATA = [
+{ level:"1st", subject:"English", semester:"First semester", units:[
+  {id:"W",  title:"(Welcome) : Hello", pages:"SB : 4 to 6",
+    pronunciation:"Sight words with correct pronunciation",
+    attitudes:"Following classroom instructions and rules.",
+    functions:"Responding to basic greetings",
+    structures:"……………",
+    vocabulary:"Numbers. Colours.",
+    topics:"(Welcome) Hello Let's get"},
+  {id:"1", title:"Family and friends", pages:"SB : 6 to 14",
+    pronunciation:"- Initial sound in simple words (s, d, c, a)\n- Intonation patterns",
+    attitudes:"- Polite interactions with each other\n- Sharing\n- Listening to others with care",
+    functions:"Introducing yourself and others",
+    structures:"- What's your name?\n- My name's …, I'm …\n- How old are you? I'm …\n- Who's this? This is (my) …",
+    vocabulary:"Family. Pets.",
+    topics:"(1) Family and friends"},
+  {id:"2", title:"My school bag", pages:"SB : 14 to 22",
+    pronunciation:"- Sound-letter correspondence\n- Correct pronunciation for a range of simple familiar sight words",
+    attitudes:"- Responsibility\n- Cleaning up their school material",
+    functions:"- Naming school objects\n- Saying what you've got",
+    structures:"- I've got …\n- I haven't got …",
+    vocabulary:"Classroom objects.",
+    topics:"(2) My school bag"},
+  {id:"3", title:"Our classroom", pages:"SB : 22 to 30",
+    pronunciation:"- Initial sound in simple words (t, m, w, i)\n- Intonation patterns",
+    attitudes:"- Respecting others in group work\n- Saving their own school objects",
+    functions:"- Naming things in a classroom\n- Describing where things are",
+    structures:"- What's this? It's a ...\n- The book is on the chair.\n- The pens are on the floor.",
+    vocabulary:"In the classroom.",
+    topics:"(3) Our classroom"},
+  {id:"4", title:"My favorite toy", pages:"SB : 30 to 38",
+    pronunciation:"- CVC words\n- Intonation patterns\n- Short vowel sounds in simple words (i, e, a)",
+    attitudes:"- Team work\n- Sharing\n- Taking care of their objects (e.g. toys)",
+    functions:"- Naming toys and their colours\n- Naming your favorite toy\n- Saying how you feel",
+    structures:"- What colour is it? It's …\n- I'm happy/sad.\n- What's your favorite toy? It's a…… My…..",
+    vocabulary:"Toys. Feelings.",
+    topics:"(4) My favorite toy"}
+]},
+{ level:"2nd", subject:"English", semester:"First semester", units:[
+  {id:"W", title:"(Welcome) : Hello", pages:"SB : 4 to 7",
+    pronunciation:"Numbers and Colours words with correct pronunciation",
+    attitudes:"- Communicate politely and empathetically\n- Show respect toward colleagues\n- Follow all instructions given by the teacher",
+    functions:"- Introducing yourself and others\n- Naming characters\n- Identifying quantities and colours of objects",
+    structures:"What's your name? My name's …, I'm …\nHow old are you? I'm …\nHow many …? What colour is it?",
+    vocabulary:"Numbers one-ten\nColours: black, blue, brown, green, orange, pink, purple, red, white, yellow",
+    topics:"(Welcome) Hello Let's get"},
+  {id:"1", title:"Look at my toys!", pages:"SB : 8 to 15",
+    pronunciation:"bike, five, cake, plane",
+    attitudes:"- Responsibility: Take care of toys and follow rules during play\n- Pay attention to others' ideas and respond thoughtfully\n- Respect for diversity: appreciate different cultures, traditions, and ways of expression",
+    functions:"- Naming toys\n- Asking and answering about toys",
+    structures:"What's this? It's a (car). It's an (action figure).\nIs it a (swing)? Yes, it is. No, it isn't.\nCan I play with (it), please?",
+    vocabulary:"- Inside toys: action figure, building set, car, dinosaur, doll, plane, puzzle, robot, teddy, yoyo\n- Outside toys: ball, bike, kite, scooter, slide, swing",
+    topics:"(1) Look at my toys!"},
+  {id:"2", title:"Where's my pen?", pages:"SB : 16 to 23",
+    pronunciation:"shelf, shop, chair, chick",
+    attitudes:"- Cooperation: work together in games, role-play, and group activities\n- Cultural appreciation: recognize and respect different symbols, colors, and traditions",
+    functions:"- Naming classroom objects\n- Talking about classroom objects and saying where they are",
+    structures:"This is (my pencil case). These are (my books).\nWhere's (the pencil)? It's in/on/under (the desk).\nCan I borrow (it), please? Yes. Here you are.",
+    vocabulary:"Classroom objects: bag, book, chair, computer, crayon, cupboard, desk, eraser, pen, pencil, pencil case, pencil sharpener, ruler, scissors, shelf, table",
+    topics:"(2) Where's my pen?"},
+  {id:"3", title:"Move your body!", pages:"SB : 24 to 31",
+    pronunciation:"feet, knees, arms, park",
+    attitudes:"- Respectful communication: use polite language and expressions in interactions\n- Responsibility: follow safety instructions and emergency commands\n- Focus and discipline: listen carefully and follow instructions during activities",
+    functions:"- Naming body parts\n- Talking about movement",
+    structures:"I've got (one face). I've got (ten toes).\nMove (your body)! Touch (your head)!\nWhat a cool (dinosaur)!",
+    vocabulary:"- Body parts: arms, face, feet, fingers, hands, head, knees, legs, toes, tummy\n- Body movement: bend, clap, move, stamp, stretch, touch",
+    topics:"(3) Move your body!"},
+  {id:"4", title:"Meet my family", pages:"SB : 32 to 40",
+    pronunciation:"brother, this, three, mouth",
+    attitudes:"- Gratitude: express appreciation for family, friends, and helpers\n- Empathy: show understanding and kindness toward others in the family and classroom\n- Cultural appreciation: recognize and respect differences in appearance, traditions, and family structures",
+    functions:"- Naming family members\n- Describing family members using parts of the face",
+    structures:"Who's this? It's (my uncle).\nHe's got (blue eyes). She's got (green eyes).\nHis name's … Her name's …",
+    vocabulary:"- Family: aunt, brother, cousin, dad, grandad, granny, me, mum, sister, uncle\n- Face: ears, eyes, fair/brown/red/black hair, mouth, nose",
+    topics:"(4) Meet my family"}
+]},
+{ level:"3rd", subject:"English", semester:"First semester", units:[
+  {id:"W", title:"Back to School", pages:"SB : 4 to 8",
+    pronunciation:"Use phonic knowledge and word recognition to aid comprehension",
+    attitudes:"- Team work\n- Cooperation",
+    functions:"Asking for and spelling names",
+    structures:"This is a pen. / These are pens.\nThat is a pen. / Those are pens.",
+    vocabulary:"Alphabet. Numbers 11–20.",
+    topics:"(W) Back to School Let's get"},
+  {id:"1", title:"It's a happy day", pages:"SB : 8 to 18",
+    pronunciation:"- Stress content words\n- Contract weak forms\n- Express rising-falling intonation\n- Stress the main verb in a sentence\n- Stress the final word in a sentence\n- Use syllabification\n- Use correct pauses\n- /pl/, /bl/",
+    attitudes:"- Raise awareness of cultural similarities and differences\n- Organize their daily routine activities",
+    functions:"Saying the time",
+    structures:"- play / don't play.\n- We have / don't have lunch.\n- When do you go home? We go home in the afternoon.",
+    vocabulary:"Daily routines. Times of the day.",
+    topics:"(1) It's a happy day"},
+  {id:"2", title:"Let's dress up", pages:"SB : 18 to 28",
+    pronunciation:"- Use pauses in communicating\n- Initial sounds (/dr/, /tr/, /br/)",
+    attitudes:"- Accept peer review and objectively discuss criticism",
+    functions:"Asking the price",
+    structures:"- You're / They're wearing jeans and trainers.\n- Our glasses are blue.\n- Your keys are grey.\n- Their phones are green.",
+    vocabulary:"Clothes. Personal possessions.",
+    topics:"(2) Let's dress up"},
+  {id:"3", title:"The activity center", pages:"SB : 28 to 38",
+    pronunciation:"- /sk/, /sw/, /st/\n- Use stress and intonation patterns to clearly communicate ideas\n- Contract weak forms\n- Express rising-falling intonation\n- Stress the main verb in a sentence\n- Stress the final word in a sentence\n- Use syllabification",
+    attitudes:"- Team work",
+    functions:"Talking about favorite activities",
+    structures:"- He/She plays video games.\n- He/She doesn't watch TV.\n- Does he do karate on Saturday? Yes, he does / No, he doesn't.",
+    vocabulary:"Activities. Days of the week.",
+    topics:"(3) The activity center"},
+  {id:"4", title:"I want to be a teacher.", pages:"SB : 38 to 48",
+    pronunciation:"- Stress and intonation patterns\n- Rising-falling intonation\n- Initial sound /wh/",
+    attitudes:"- Respect peer feedback",
+    functions:"Buying tickets",
+    structures:"- I want to be a pilot.\n- He/She goes to work by bus.",
+    vocabulary:"Jobs. Transport.",
+    topics:"(4) I want to be a teacher."}
+]},
+{ level:"4th", subject:"English", semester:"First semester", units:[
+  {id:"W", title:"New neighbours", pages:"SB : 4 to 7",
+    pronunciation:"………",
+    attitudes:"- Global awareness: learn about other countries and cultures with curiosity\n- Politeness in communication: use respectful language when discussing identity and nationality\n- Collaboration",
+    functions:"- Describing origin or identity: talking about countries and nationalities. \"I am from Jordan. I am Jordanian.\"\n- Describing routines or habits: using simple present tense",
+    structures:"Revision of to be and like: I like / He likes swimming.\nWhere are you from? I'm from (Jordan). I'm (Jordanian).",
+    vocabulary:"- Countries: Egypt, Jordan, Qatar, Spain, the United Kingdom, the United Arab Emirates\n- Nationalities: British, Egyptian, Emirati, Jordanian, Qatari, Spanish\n- Hobbies: canoeing, going shopping, playing basketball/football/table tennis/tennis, reading, swimming\n- Numbers: 1–100",
+    topics:"(W) New neighbours Let's get"},
+  {id:"1", title:"New school", pages:"SB : 8 to 17",
+    pronunciation:"/s/ /z/ /ɪz/ — likes, makes, reads, goes, brushes, watches",
+    attitudes:"- Respect for others through dialogues, group work, and roleplay\n- Respect for school roles and spaces\n- Confidence in communication\n- Appreciation of diversity",
+    functions:"Making arrangements: Do you want to play football tomorrow morning?",
+    structures:"Present simple with dates and times: We have Maths on Tuesdays at 11 o'clock.\nPresent simple with adverbs of frequency: She plays tennis twice a week.",
+    vocabulary:"- School subjects: Arabic, Art, English, Digital Skills, Maths, PE, Science, Social Studies\n- People and places in school: headteacher, school nurse, science lab\n- Adverbs of frequency: always, never, often, sometimes\n- Adverbial phrases: at the weekend, every day, once a week, twice a week, three times a week",
+    topics:"(1) New school"},
+  {id:"2", title:"Picnic time!", pages:"SB : 18 to 27",
+    pronunciation:"/iː/ — key, seat, tea, feet, dirty, see, happy, family",
+    attitudes:"- Cooperation and teamwork\n- Fairness and inclusion\n- Confidence in speaking and presenting\n- National pride and identity: recognizing the Jordanian flag and nationality supports a sense of belonging and pride in one's heritage",
+    functions:"Shopping for food: Can I help you? Can I have (six apples), please? Here you are! Anything else? No, that's it, thanks! That's (five dinars), please.",
+    structures:"There is / There are with countable and uncountable nouns: There's a lot of salad and a little lemonade.\nThere aren't any cupcakes. Are there any apples? Yes, there are. / No, there aren't.",
+    vocabulary:"- Food: cereal, cupcakes, fruit, noodles, olives, salad, sandwiches, vegetables\n- Drink: coffee, lemonade, milkshake, tea\n- Containers: a bag of, a bottle of, a bowl of, a box of, a can of, a cup of, a glass of, a plate of",
+    topics:"(2) Picnic time!"},
+  {id:"3", title:"Along the river", pages:"SB : 28 to 37",
+    pronunciation:"/aɪ/ — prize, bike, ride, bedtime, light, goodnight",
+    attitudes:"- Cultural awareness\n- Respect for others and diversity\n- Awareness of surroundings\n- Love and care for nature\n- Respectful dialogue",
+    functions:"Asking the way: Excuse me, can you tell me the way to (the park), please? Turn right (at the supermarket). Turn left (at the hospital). Go straight ahead. Go across the road. It's on the (left).",
+    structures:"Comparatives and superlatives — short adjectives: A mountain is higher than a hill. This is the deepest lake in the UK.\nComparatives and superlatives — long adjectives: Swimming is more exciting than walking. Amman is the most exciting city in the world.",
+    vocabulary:"- Landscapes: city, forest, hill, island, lake, mountain, river, town, waterfall\n- Adjectives: beautiful, boring, colourful, dangerous, deep, delicious, difficult, exciting, high, interesting, wide",
+    topics:"(3) Along the river"},
+  {id:"4", title:"All about jobs", pages:"SB : 38 to 48",
+    pronunciation:"/eɪ/ — snail, painting, rain, playing, hay, snake, cake",
+    attitudes:"- Respect for roles in society\n- Responsibility and rule-following\n- Respect for authority and order\n- Confidence in expressing rules and duties",
+    functions:"Calling the emergency services: What service do you need? I need an ambulance/the police/the fire brigade, please. What's your address/phone number? My address is… My phone number is… What's the emergency? He's got a broken leg.",
+    structures:"Present continuous: He's cooking. / They aren't playing a game. Are you wearing a green jacket?\nmust / mustn't: You must be quiet in class.",
+    vocabulary:"- Jobs: bus driver, carpenter, chef, doctor, farmer, firefighter, mechanic, police officer, scientist, teacher, vet, waiter/waitress\n- Rules: arrive on time, be late, be quiet in class, break the rules, drop litter, follow the rules, put litter in the bin, shout in class",
+    topics:"(4) All about jobs"}
+]},
+{ level:"5th", subject:"English", semester:"First semester", units:[
+  {id:"W", title:"Welcome back", pages:"SB : 4 to 8",
+    pronunciation:"………",
+    attitudes:"Using free time effectively.",
+    functions:"………",
+    structures:"Present simple with before/after/when",
+    vocabulary:"Free-time activities. Appearance.",
+    topics:"(W) Welcome back Let's get"},
+  {id:"1", title:"Talent show", pages:"SB : 8 to 20",
+    pronunciation:"The prefix un- for adjectives: untidy, unfriendly, unhappy, unlucky, unwell, unsafe",
+    attitudes:"Appreciation of good qualities and good manner.",
+    functions:"Describing people",
+    structures:"Comparative and superlative adjectives; be good at",
+    vocabulary:"Personality adjectives. Hobbies.",
+    topics:"(1) Talent show"},
+  {id:"2", title:"Then and now", pages:"SB : 20 to 32",
+    pronunciation:"Changing verbs to nouns using the suffix -tion: inform, information, describe, description",
+    attitudes:"The importance of technology and appreciating the past.",
+    functions:"Asking for information",
+    structures:"Past simple; could/couldn't",
+    vocabulary:"Technology: verbs related to technology.",
+    topics:"(2) Then and now"},
+  {id:"3", title:"Let's explore", pages:"SB : 32 to 36",
+    pronunciation:"Syllable stress with two- and three-syllable words: planet, spacesuit, rocket, satellite, astronaut, telescope, scientist, explorer",
+    attitudes:"The importance of science and all types of exploration.",
+    functions:"Asking for information",
+    structures:"will/won't; How…?",
+    vocabulary:"Space. Big numbers.",
+    topics:"(3) Let's explore"},
+  {id:"4", title:"Off to the shops", pages:"SB : 36 to 48",
+    pronunciation:"Changing verbs to nouns using the suffix -ment: pay, payment, encourage, encouragement",
+    attitudes:"Appreciating Earth's resources and crops as well as God's gifts.",
+    functions:"Asking for information",
+    structures:"Relative clauses; have to / don't have to",
+    vocabulary:"Shops. Money and prices.",
+    topics:"(4) Off to the shops"}
+]},
+{ level:"6th", subject:"English", semester:"First semester", units:[
+  {id:"W", title:"The WOW! Team", pages:"SB : 4 to 7",
+    pronunciation:"—",
+    attitudes:"- Respect for individual differences\n- Politeness and kindness\n- Empathy and understanding\n- Responsibility and independence\n- Sharing ideas and working together",
+    functions:"Describing personality (adjectives like friendly, shy, outgoing, etc.)",
+    structures:"Present simple: I'm 12 years old. I have dark, curly hair.",
+    vocabulary:"Personality adjectives: cheerful, confident, friendly, hard-working, kind, lazy, polite, quiet, responsible, shy, tidy, untidy",
+    topics:"(W) The WOW! Team"},
+  {id:"1", title:"Free-time fun", pages:"SB : 8 to 17",
+    pronunciation:"Identifying unstressed words: I can upload a photo. I go online and send a message.",
+    attitudes:"- Respect and cooperation\n- Confidence and self-expression\n- Helpfulness: asking questions to seek help or clarify shows a proactive and supportive attitude",
+    functions:"Making and responding to suggestions: Why don't you write a blog? That's a good idea.",
+    structures:"Present simple and present continuous: I play volleyball after school. I'm sitting straight now.\nState verbs: He prefers doing photography. It sounds good. Do you know this song?",
+    vocabulary:"- Sports: do archery, do athletics, do gymnastics, go cycling, go ice skating, go scooting, go skiing, go snowboarding, play badminton, play hockey, play table tennis, play volleyball\n- Hobbies: do photography, do puzzles, do the gardening, draw pictures, go to book fairs, go to museums, listen to audiobooks, make models, play board games, watch cartoons, write a blog, write a diary",
+    topics:"(1) Free-time fun"},
+  {id:"2", title:"Technology", pages:"SB : 18 to 31",
+    pronunciation:"Unstressed words and syllables: She climbed a hill to see a tower. The harbour is around the corner.",
+    attitudes:"- Respect for others: distinguishing expressions of politeness, requests, and invitations\n- Cooperation: turn-taking in dialogues and participating in interviews\n- Self-expression: presenting ideas and opinions visually or orally",
+    functions:"Giving directions in a building: It's upstairs. It's on the left.",
+    structures:"could/couldn't, had to/didn't have to: We could write. We couldn't use computers. We had to use a pen. He didn't have to write.\nComparative adverbs: It does everything more quickly than before. It takes photos better.",
+    vocabulary:"- Devices: app, device, digital camera, e-reader, headphones, laptop, password, printer, screen, smartphone, speaker, website\n- Using technology: click on an icon, download an app, go online, press a button, search the internet, send a message, take a selfie, turn off the TV, turn on the computer, type a password, upload a photo, watch a video",
+    topics:"(2) Technology"},
+  {id:"3", title:"Places", pages:"SB : 32 to 41",
+    pronunciation:"/aɪ/ — prize, bike, ride, bedtime, light, goodnight",
+    attitudes:"- Community pride: feeling connected to and proud of one's local environment and cultural heritage\n- Cooperation: working well with others to complete tasks and communicate effectively",
+    functions:"Giving directions in a building: It's upstairs. It's on the left.",
+    structures:"Comparatives and superlatives — short adjectives: A mountain is higher than a hill. This is the deepest lake in the UK.\nComparatives and superlatives — long adjectives: Swimming is more exciting than walking. Amman is the most exciting city in the world.",
+    vocabulary:"- Landscapes: city, forest, hill, island, lake, mountain, river, town, waterfall\n- Adjectives: beautiful, boring, colourful, dangerous, deep, delicious, difficult, exciting, high, interesting, wide",
+    topics:"(3) Places"},
+  {id:"4", title:"Happy homes", pages:"SB : 42 to 52",
+    pronunciation:"\"er\" versus the schwa sound: Shall we have dinner? The food is interesting.",
+    attitudes:"- Appreciation of culture\n- Responsibility\n- Respect for diversity: listening to stories and dialogues from different functions promotes openness to varied social and cultural contexts",
+    functions:"Offering to help: Shall I cook the noodles? What do you want us to do now?",
+    structures:"Present perfect with already, just and yet: I've just swept the floor. I've already eaten lunch. She hasn't cleared the table yet.\nSense verbs: What does it taste like? It smells delicious. It feels soft.",
+    vocabulary:"- Household chores: clear the table, cook the dinner, do the washing up, dust the furniture, empty the bin, load the dishwasher, put away the clothes, sweep the floor, take out the rubbish, tidy up, vacuum the carpet, water the plants\n- Cooking: add, bake, boil, chop, cut, fork, fry, knife, mix, pepper, salt, spoon",
+    topics:"(4) Happy homes"}
+]}
+];
+
+const COLUMNS = [
+  {key:"pronunciation", label:"Pronunciation"},
+  {key:"attitudes",     label:"Attitudes & Values"},
+  {key:"functions",     label:"Functions"},
+  {key:"structures",    label:"Structures"},
+  {key:"vocabulary",    label:"Vocabulary, Terms & Expressions"},
+  {key:"topics",        label:"Topics & Themes"}
+];
+
+/* deep clone so "reset" always has a clean original to fall back on */
+let state = JSON.parse(JSON.stringify(ORIGINAL_DATA));
+let activeGrade = 0;
+
+/* ---------- Rendering ---------- */
+const gradeNav = document.getElementById("gradeNav");
+const gradeFields = document.getElementById("gradeFields");
+const unitsContainer = document.getElementById("unitsContainer");
+
+function renderNav(){
+  gradeNav.innerHTML = "";
+  state.forEach((g, i) => {
+    const b = document.createElement("button");
+    b.textContent = g.level.replace(/(st|nd|rd|th)/, "") + " grade";
+    b.className = i === activeGrade ? "active" : "";
+    b.onclick = () => { activeGrade = i; renderAll(); };
+    gradeNav.appendChild(b);
+  });
+}
+
+function renderGradeFields(){
+  const g = state[activeGrade];
+  gradeFields.innerHTML = `
+    <div class="field"><label>Subject</label><input data-bind="subject" value="${escAttr(g.subject)}"></div>
+    <div class="field"><label>Class / Level</label><input data-bind="level" value="${escAttr(g.level)}"></div>
+    <div class="field"><label>Semester</label><input data-bind="semester" value="${escAttr(g.semester)}"></div>
+  `;
+  gradeFields.querySelectorAll("input").forEach(inp => {
+    inp.addEventListener("input", () => {
+      g[inp.dataset.bind] = inp.value;
+      if(inp.dataset.bind === "level") renderNav();
+    });
+  });
+}
+
+function renderUnits(){
+  const g = state[activeGrade];
+  unitsContainer.innerHTML = "";
+  g.units.forEach((u, ui) => {
+    const card = document.createElement("div");
+    card.className = "unit-card";
+
+    const bar = document.createElement("div");
+    bar.className = "unit-bar";
+    bar.innerHTML = `
+      <span class="tag">Unit ${escAttr(u.id)}</span>
+      <input class="title" data-field="title" value="${escAttr(u.title)}" placeholder="Unit title">
+      <input class="pages" data-field="pages" value="${escAttr(u.pages)}" placeholder="Pages, e.g. SB : 4 to 12">
+      <button class="remove" data-action="remove">✕ Remove unit</button>
+    `;
+    bar.querySelector('[data-field="title"]').addEventListener("input", e => u.title = e.target.value);
+    bar.querySelector('[data-field="pages"]').addEventListener("input", e => u.pages = e.target.value);
+    bar.querySelector('[data-action="remove"]').addEventListener("click", () => {
+      g.units.splice(ui, 1);
+      renderUnits();
+    });
+
+    const table = document.createElement("table");
+    table.className = "analysis";
+    const thead = document.createElement("tr");
+    COLUMNS.forEach(c => {
+      const th = document.createElement("th");
+      th.textContent = c.label;
+      thead.appendChild(th);
+    });
+    table.appendChild(thead);
+
+    const row = document.createElement("tr");
+    COLUMNS.forEach(c => {
+      const td = document.createElement("td");
+      const ta = document.createElement("textarea");
+      ta.value = u[c.key] || "";
+      ta.addEventListener("input", () => { u[c.key] = ta.value; autosize(ta); });
+      td.appendChild(ta);
+      row.appendChild(td);
+    });
+    table.appendChild(row);
+
+    card.appendChild(bar);
+    card.appendChild(table);
+    unitsContainer.appendChild(card);
+  });
+
+  // size textareas after they're in the DOM
+  unitsContainer.querySelectorAll("textarea").forEach(autosize);
+}
+
+function autosize(ta){
+  ta.style.height = "auto";
+  ta.style.height = Math.max(100, ta.scrollHeight + 2) + "px";
+}
+
+function renderAll(){
+  renderNav();
+  renderGradeFields();
+  renderUnits();
+}
+
+function escAttr(s){
+  return String(s || "").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+}
+
+/* ---------- Add unit ---------- */
+document.getElementById("addUnitBtn").addEventListener("click", () => {
+  const g = state[activeGrade];
+  const nextNum = g.units.filter(u => /^\d+$/.test(u.id)).length + 1;
+  g.units.push({
+    id:String(nextNum), title:"New unit", pages:"SB : ",
+    pronunciation:"", attitudes:"", functions:"", structures:"", vocabulary:"", topics:""
+  });
+  renderUnits();
+});
+
+/* ---------- Reset ---------- */
+document.getElementById("resetGradeBtn").addEventListener("click", () => {
+  state[activeGrade] = JSON.parse(JSON.stringify(ORIGINAL_DATA[activeGrade]));
+  renderAll();
+  showToast("Grade reset to the original file content.");
+});
+
+/* ---------- Word (.doc) export ---------- */
+function escHtml(s){
+  return String(s || "")
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/\n/g,"<br>");
+}
+
+function gradeToWordBody(g){
+  let html = `<h1 style="font-family:Calibri,Arial,sans-serif;">Content Analysis</h1>
+  <h2 style="font-family:Calibri,Arial,sans-serif;">Subject: ${escHtml(g.subject)}</h2>`;
+  g.units.forEach(u => {
+    html += `<p style="font-family:Calibri,Arial,sans-serif;font-size:11pt;">
+      Class/Level: ${escHtml(g.level)} &nbsp;&nbsp;&nbsp; ${escHtml(g.semester)} &nbsp;&nbsp;&nbsp;
+      <b>Unit Title (${escHtml(u.id)}): ${escHtml(u.title)}</b> &nbsp;&nbsp;&nbsp; Pages ${escHtml(u.pages)}</p>`;
+    html += `<table style="border-collapse:collapse;width:100%;" border="1" cellspacing="0" cellpadding="6">
+      <tr>${COLUMNS.map(c => `<th style="background:#D9E2F3;font-family:Calibri,Arial,sans-serif;font-size:10pt;text-align:left;">${c.label}</th>`).join("")}</tr>
+      <tr>${COLUMNS.map(c => `<td style="font-family:Calibri,Arial,sans-serif;font-size:10.5pt;vertical-align:top;">${escHtml(u[c.key])}</td>`).join("")}</tr>
+    </table>
+    <p style="font-family:Calibri,Arial,sans-serif;font-size:8pt;color:#666;">Form # QF71-1-49 rev. a</p>
+    <br>`;
+  });
+  return html;
+}
+
+function wrapWordDocument(bodyHtml, title){
+  return `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>${escHtml(title)}</title>
+<!--[if gte mso 9]>
+<xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml>
+<![endif]-->
+<style>
+  @page { size:842.4pt 595.3pt; mso-page-orientation:landscape; margin:1in 0.6in 1in 0.6in; }
+  body { font-family:Calibri, Arial, sans-serif; }
+  table { border-collapse:collapse; }
+  td, th { border:1px solid #444; padding:6px; }
+</style>
+</head>
+<body>${bodyHtml}</body>
+</html>`;
+}
+
+function downloadDoc(html, filename){
+  const blob = new Blob(['\ufeff', html], { type: "application/msword" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById("downloadGradeBtn").addEventListener("click", () => {
+  const g = state[activeGrade];
+  const body = gradeToWordBody(g);
+  const title = `Content Analysis - Grade ${g.level}`;
+  downloadDoc(wrapWordDocument(body, title), `Content_Analysis_Grade_${g.level.replace(/\D/g,"")}.doc`);
+  showToast(`Downloaded Grade ${g.level} content analysis.`);
+});
+
+document.getElementById("downloadAllBtn").addEventListener("click", () => {
+  let body = "";
+  state.forEach((g, i) => {
+    body += gradeToWordBody(g);
+    if(i < state.length - 1){
+      body += `<br clear="all" style="page-break-before:always">`;
+    }
+  });
+  downloadDoc(wrapWordDocument(body, "Content Analysis - Grades 1-6"), "Content_Analysis_Grades_1-6.doc");
+  showToast("Downloaded all 6 grades in one Word file.");
+});
+
+/* ---------- Toast ---------- */
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+renderAll();
+</script>
+</body>
+</html>
