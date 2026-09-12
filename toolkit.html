@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Curriculum Planning Toolkit — Grades 1–6</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e2033">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Curriculum Toolkit">
+<style>
+  :root{
+    --navy:#1c3a5e;
+    --navy-deep:#12283f;
+    --slate:#3f5872;
+    --paper:#f7f5f0;
+    --card:#ffffff;
+    --line:#d9d3c4;
+    --accent:#b5651d;
+    --accent-soft:#f1e3d3;
+    --ink:#20242a;
+    --muted:#6b7280;
+    --good:#2f6d4f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: "Iowan Old Style","Palatino Linotype", Georgia, serif;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  .topbar{
+    background:var(--navy-deep);
+    color:#f2ede2;
+    padding:20px 28px 0;
+    border-bottom:4px solid var(--accent);
+  }
+  .topbar h1{
+    margin:0 0 4px;
+    font-size:1.5rem;
+    font-weight:600;
+    letter-spacing:.01em;
+  }
+  .topbar p.sub{
+    margin:0 0 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.85rem;
+    color:#c9d2de;
+  }
+  .modes{
+    display:flex;
+    gap:4px;
+  }
+  .modes button{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.88rem;
+    font-weight:600;
+    padding:10px 20px;
+    background:transparent;
+    border:none;
+    color:#b7c2d1;
+    cursor:pointer;
+    border-bottom:3px solid transparent;
+  }
+  .modes button.active{
+    color:#fff;
+    border-bottom:3px solid var(--accent);
+    background:rgba(255,255,255,.05);
+  }
+  .layout{
+    display:flex;
+    min-height:calc(100vh - 100px);
+  }
+  nav.grades{
+    width:150px;
+    flex:0 0 150px;
+    background:var(--navy);
+    padding:18px 0;
+  }
+  nav.grades button{
+    display:block;
+    width:100%;
+    text-align:left;
+    padding:12px 20px;
+    background:none;
+    border:none;
+    border-left:4px solid transparent;
+    color:#dbe4f0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.92rem;
+    cursor:pointer;
+    transition:background .15s;
+  }
+  nav.grades button:hover{ background:rgba(255,255,255,.08); }
+  nav.grades button.active{
+    background:var(--paper);
+    color:var(--navy-deep);
+    font-weight:700;
+    border-left:4px solid var(--accent);
+  }
+  main{
+    flex:1;
+    padding:26px 34px 60px;
+    max-width:1220px;
+  }
+  .grade-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-bottom:18px;
+    padding-bottom:14px;
+    border-bottom:2px solid var(--line);
+  }
+  .grade-fields{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  }
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+  }
+  .field label{
+    font-size:.68rem;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--muted);
+  }
+  .field input{
+    font-family: inherit;
+    font-size:.95rem;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:6px 8px;
+    background:var(--card);
+    color:var(--ink);
+    min-width:140px;
+  }
+  .field input:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  button.btn{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.83rem;
+    font-weight:600;
+    padding:9px 14px;
+    border-radius:5px;
+    border:1px solid var(--navy);
+    background:var(--navy);
+    color:#fff;
+    cursor:pointer;
+  }
+  button.btn.secondary{ background:var(--card); color:var(--navy); }
+  button.btn.ghost{ background:transparent; color:var(--slate); border-color:var(--line); }
+  button.btn:hover{ opacity:.88; }
+
+  .unit-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    margin-bottom:22px;
+    overflow:hidden;
+  }
+  .unit-bar{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    background:var(--accent-soft);
+    padding:10px 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  }
+  .unit-bar .tag{
+    font-weight:700;
+    color:var(--accent);
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
+  .unit-bar input.title{
+    flex:1 1 220px;
+    font-family: inherit;
+    font-size:.95rem;
+    font-weight:600;
+    border:1px solid transparent;
+    background:transparent;
+    padding:5px 6px;
+    border-radius:4px;
+    color:var(--ink);
+  }
+  .unit-bar input.title:focus{ background:#fff; border-color:var(--line); outline:none; }
+  .unit-bar input.meta{
+    width:132px;
+    font-family: inherit;
+    font-size:.78rem;
+    border:1px solid var(--line);
+    background:#fff;
+    padding:5px 7px;
+    border-radius:4px;
+    color:var(--slate);
+  }
+  .unit-bar button.remove{
+    background:none;
+    border:none;
+    color:#a44;
+    cursor:pointer;
+    font-size:.78rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  }
+  table.analysis{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+  }
+  table.analysis th{
+    background:#eef1f5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--slate);
+    text-align:left;
+    padding:8px 10px;
+    border:1px solid var(--line);
+  }
+  table.analysis td{
+    border:1px solid var(--line);
+    vertical-align:top;
+    padding:0;
+  }
+  table.analysis textarea{
+    width:100%;
+    min-height:100px;
+    border:none;
+    resize:vertical;
+    padding:9px 10px;
+    font-family: "Iowan Old Style", Georgia, serif;
+    font-size:.87rem;
+    line-height:1.4;
+    color:var(--ink);
+    background:transparent;
+  }
+  table.analysis textarea:focus{ outline:2px solid var(--accent); outline-offset:-2px; background:#fffdf8; }
+
+  .tp-table-wrap{ overflow-x:auto; }
+  table.tp-table{ min-width:1100px; table-layout:fixed; }
+  table.tp-table th:nth-child(1), table.tp-table td:nth-child(1){ width:6%; }
+  table.tp-table th:nth-child(2), table.tp-table td:nth-child(2){ width:21%; }
+  table.tp-table th:nth-child(3), table.tp-table td:nth-child(3){ width:13%; }
+  table.tp-table th:nth-child(4), table.tp-table td:nth-child(4){ width:13%; }
+  table.tp-table th:nth-child(5), table.tp-table td:nth-child(5),
+  table.tp-table th:nth-child(6), table.tp-table td:nth-child(6){ width:8%; }
+  table.tp-table th:nth-child(7), table.tp-table td:nth-child(7){ width:13%; }
+  table.tp-table th:nth-child(8), table.tp-table td:nth-child(8){ width:12%; }
+  td.tp-subhead{
+    background:#eef1f5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--slate);
+    text-align:center;
+    padding:6px 4px;
+    vertical-align:middle;
+  }
+
+  .toolbar-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:6px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .hint{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.78rem;
+    color:var(--muted);
+  }
+  .toast{
+    position:fixed;
+    bottom:22px;
+    right:22px;
+    background:var(--good);
+    color:#fff;
+    padding:10px 16px;
+    border-radius:6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size:.85rem;
+    box-shadow:0 4px 14px rgba(0,0,0,.2);
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity .2s, transform .2s;
+    pointer-events:none;
+    z-index:50;
+  }
+  .toast.show{ opacity:1; transform:translateY(0); }
+  @media (max-width:760px){
+    .layout{ flex-direction:column; }
+    nav.grades{ width:100%; flex:none; display:flex; overflow-x:auto; padding:8px; }
+    nav.grades button{ border-left:none; border-bottom:3px solid transparent; white-space:nowrap; }
+    nav.grades button.active{ border-bottom-color:var(--accent); }
+    main{ padding:18px; }
+    table.tp-table{ min-width:900px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>Curriculum Planning Toolkit</h1>
+  <p class="sub">Hmood Primary Mixed School · English Language · Grades 1–6 · First Semester</p>
+  <p class="sub" style="margin-top:-10px;">Prepared by Teacher Marina Al-Baqaeen</p>
+  <div class="modes" id="modeNav"></div>
+</div>
+
+<div class="layout">
+  <nav class="grades" id="gradeNav"></nav>
+  <main>
+    <div class="grade-head">
+      <div class="grade-fields" id="gradeFields"></div>
+      <div class="actions">
+        <button class="btn secondary" id="resetGradeBtn">Reset this grade</button>
+        <button class="btn" id="downloadGradeBtn">Download this grade (.doc)</button>
+      </div>
+    </div>
+
+    <div id="unitsContainer"></div>
+
+    <div class="toolbar-bottom">
+      <button class="btn ghost" id="addUnitBtn">+ Add unit</button>
+      <div class="actions">
+        <span class="hint" id="hintText">Everything below is editable — type directly into any field.</span>
+        <button class="btn secondary" id="downloadAllBtn">Download all 6 grades (.doc)</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =======================================================================
+   MODULE 1 — CONTENT ANALYSIS  (data transcribed from the six
+   "Content Analysis" files)
+   ======================================================================= */
+const CA_COLUMNS = [
+  {key:"pronunciation", label:"Pronunciation"},
+  {key:"attitudes",     label:"Attitudes & Values"},
+  {key:"functions",     label:"Functions"},
+  {key:"structures",    label:"Structures"},
+  {key:"vocabulary",    label:"Vocabulary, Terms & Expressions"},
+  {key:"topics",        label:"Topics & Themes"}
+];
+
+const ORIGINAL_DATA_CA = [
+{ level:"1st", subject:"English", semester:"First semester", units:[
+  {id:"W",  title:"(Welcome) : Hello", pages:"SB : 4 to 6",
+    pronunciation:"Sight words with correct pronunciation",
+    attitudes:"Following classroom instructions and rules.",
+    functions:"Responding to basic greetings",
+    structures:"……………",
+    vocabulary:"Numbers. Colours.",
+    topics:"(Welcome) Hello Let's get"},
+  {id:"1", title:"Family and friends", pages:"SB : 6 to 14",
+    pronunciation:"- Initial sound in simple words (s, d, c, a)\n- Intonation patterns",
+    attitudes:"- Polite interactions with each other\n- Sharing\n- Listening to others with care",
+    functions:"Introducing yourself and others",
+    structures:"- What's your name?\n- My name's …, I'm …\n- How old are you? I'm …\n- Who's this? This is (my) …",
+    vocabulary:"Family. Pets.",
+    topics:"(1) Family and friends"},
+  {id:"2", title:"My school bag", pages:"SB : 14 to 22",
+    pronunciation:"- Sound-letter correspondence\n- Correct pronunciation for a range of simple familiar sight words",
+    attitudes:"- Responsibility\n- Cleaning up their school material",
+    functions:"- Naming school objects\n- Saying what you've got",
+    structures:"- I've got …\n- I haven't got …",
+    vocabulary:"Classroom objects.",
+    topics:"(2) My school bag"},
+  {id:"3", title:"Our classroom", pages:"SB : 22 to 30",
+    pronunciation:"- Initial sound in simple words (t, m, w, i)\n- Intonation patterns",
+    attitudes:"- Respecting others in group work\n- Saving their own school objects",
+    functions:"- Naming things in a classroom\n- Describing where things are",
+    structures:"- What's this? It's a ...\n- The book is on the chair.\n- The pens are on the floor.",
+    vocabulary:"In the classroom.",
+    topics:"(3) Our classroom"},
+  {id:"4", title:"My favorite toy", pages:"SB : 30 to 38",
+    pronunciation:"- CVC words\n- Intonation patterns\n- Short vowel sounds in simple words (i, e, a)",
+    attitudes:"- Team work\n- Sharing\n- Taking care of their objects (e.g. toys)",
+    functions:"- Naming toys and their colours\n- Naming your favorite toy\n- Saying how you feel",
+    structures:"- What colour is it? It's …\n- I'm happy/sad.\n- What's your favorite toy? It's a…… My…..",
+    vocabulary:"Toys. Feelings.",
+    topics:"(4) My favorite toy"}
+]},
+{ level:"2nd", subject:"English", semester:"First semester", units:[
+  {id:"W", title:"(Welcome) : Hello", pages:"SB : 4 to 7",
+    pronunciation:"Numbers and Colours words with correct pronunciation",
+    attitudes:"- Communicate politely and empathetically\n- Show respect toward colleagues\n- Follow all instructions given by the teacher",
+    functions:"- Introducing yourself and others\n- Naming characters\n- Identifying quantities and colours of objects",
+    structures:"What's your name? My name's …, I'm …\nHow old are you? I'm …\nHow many …? What colour is it?",
+    vocabulary:"Numbers one-ten\nColours: black, blue, brown, green, orange, pink, purple, red, white, yellow",
+    topics:"(Welcome) Hello Let's get"},
+  {id:"1", title:"Look at my toys!", pages:"SB : 8 to 15",
+    pronunciation:"bike, five, cake, plane",
+    attitudes:"- Responsibility: Take care of toys and follow rules during play\n- Pay attention to others' ideas and respond thoughtfully\n- Respect for diversity: appreciate different cultures, traditions, and ways of expression",
+    functions:"- Naming toys\n- Asking and answering about toys",
+    structures:"What's this? It's a (car). It's an (action figure).\nIs it a (swing)? Yes, it is. No, it isn't.\nCan I play with (it), please?",
+    vocabulary:"- Inside toys: action figure, building set, car, dinosaur, doll, plane, puzzle, robot, teddy, yoyo\n- Outside toys: ball, bike, kite, scooter, slide, swing",
+    topics:"(1) Look at my toys!"},
+  {id:"2", title:"Where's my pen?", pages:"SB : 16 to 23",
+    pronunciation:"shelf, shop, chair, chick",
+    attitudes:"- Cooperation: work together in games, role-play, and group activities\n- Cultural appreciation: recognize and respect different symbols, colors, and traditions",
+    functions:"- Naming classroom objects\n- Talking about classroom objects and saying where they are",
+    structures:"This is (my pencil case). These are (my books).\nWhere's (the pencil)? It's in/on/under (the desk).\nCan I borrow (it), please? Yes. Here you are.",
+    vocabulary:"Classroom objects: bag, book, chair, computer, crayon, cupboard, desk, eraser, pen, pencil, pencil case, pencil sharpener, ruler, scissors, shelf, table",
+    topics:"(2) Where's my pen?"},
+  {id:"3", title:"Move your body!", pages:"SB : 24 to 31",
+    pronunciation:"feet, knees, arms, park",
+    attitudes:"- Respectful communication: use polite language and expressions in interactions\n- Responsibility: follow safety instructions and emergency commands\n- Focus and discipline: listen carefully and follow instructions during activities",
+    functions:"- Naming body parts\n- Talking about movement",
+    structures:"I've got (one face). I've got (ten toes).\nMove (your body)! Touch (your head)!\nWhat a cool (dinosaur)!",
+    vocabulary:"- Body parts: arms, face, feet, fingers, hands, head, knees, legs, toes, tummy\n- Body movement: bend, clap, move, stamp, stretch, touch",
+    topics:"(3) Move your body!"},
+  {id:"4", title:"Meet my family", pages:"SB : 32 to 40",
+    pronunciation:"brother, this, three, mouth",
+    attitudes:"- Gratitude: express appreciation for family, friends, and helpers\n- Empathy: show understanding and kindness toward others in the family and classroom\n- Cultural appreciation: recognize and respect differences in appearance, traditions, and family structures",
+    functions:"- Naming family members\n- Describing family members using parts of the face",
+    structures:"Who's this? It's (my uncle).\nHe's got (blue eyes). She's got (green eyes).\nHis name's … Her name's …",
+    vocabulary:"- Family: aunt, brother, cousin, dad, grandad, granny, me, mum, sister, uncle\n- Face: ears, eyes, fair/brown/red/black hair, mouth, nose",
+    topics:"(4) Meet my family"}
+]},
+{ level:"3rd", subject:"English", semester:"First semester", units:[
+  {id:"W", title:"Back to School", pages:"SB : 4 to 8",
+    pronunciation:"Use phonic knowledge and word recognition to aid comprehension",
+    attitudes:"- Team work\n- Cooperation",
+    functions:"Asking for and spelling names",
+    structures:"This is a pen. / These are pens.\nThat is a pen. / Those are pens.",
+    vocabulary:"Alphabet. Numbers 11–20.",
+    topics:"(W) Back to School Let's get"},
+  {id:"1", title:"It's a happy day", pages:"SB : 8 to 18",
+    pronunciation:"- Stress content words\n- Contract weak forms\n- Express rising-falling intonation\n- Stress the main verb in a sentence\n- Stress the final word in a sentence\n- Use syllabification\n- Use correct pauses\n- /pl/, /bl/",
+    attitudes:"- Raise awareness of cultural similarities and differences\n- Organize their daily routine activities",
+    functions:"Saying the time",
+    structures:"- play / don't play.\n- We have / don't have lunch.\n- When do you go home? We go home in the afternoon.",
+    vocabulary:"Daily routines. Times of the day.",
+    topics:"(1) It's a happy day"},
+  {id:"2", title:"Let's dress up", pages:"SB : 18 to 28",
+    pronunciation:"- Use pauses in communicating\n- Initial sounds (/dr/, /tr/, /br/)",
+    attitudes:"- Accept peer review and objectively discuss criticism",
+    functions:"Asking the price",
+    structures:"- You're / They're wearing jeans and trainers.\n- Our glasses are blue.\n- Your keys are grey.\n- Their phones are green.",
+    vocabulary:"Clothes. Personal possessions.",
+    topics:"(2) Let's dress up"},
+  {id:"3", title:"The activity center", pages:"SB : 28 to 38",
+    pronunciation:"- /sk/, /sw/, /st/\n- Use stress and intonation patterns to clearly communicate ideas\n- Contract weak forms\n- Express rising-falling intonation\n- Stress the main verb in a sentence\n- Stress the final word in a sentence\n- Use syllabification",
+    attitudes:"- Team work",
+    functions:"Talking about favorite activities",
+    structures:"- He/She plays video games.\n- He/She doesn't watch TV.\n- Does he do karate on Saturday? Yes, he does / No, he doesn't.",
+    vocabulary:"Activities. Days of the week.",
+    topics:"(3) The activity center"},
+  {id:"4", title:"I want to be a teacher.", pages:"SB : 38 to 48",
+    pronunciation:"- Stress and intonation patterns\n- Rising-falling intonation\n- Initial sound /wh/",
+    attitudes:"- Respect peer feedback",
+    functions:"Buying tickets",
+    structures:"- I want to be a pilot.\n- He/She goes to work by bus.",
+    vocabulary:"Jobs. Transport.",
+    topics:"(4) I want to be a teacher."}
+]},
+{ level:"4th", subject:"English", semester:"First semester", units:[
+  {id:"W", title:"New neighbours", pages:"SB : 4 to 7",
+    pronunciation:"………",
+    attitudes:"- Global awareness: learn about other countries and cultures with curiosity\n- Politeness in communication: use respectful language when discussing identity and nationality\n- Collaboration",
+    functions:"- Describing origin or identity: talking about countries and nationalities. \"I am from Jordan. I am Jordanian.\"\n- Describing routines or habits: using simple present tense",
+    structures:"Revision of to be and like: I like / He likes swimming.\nWhere are you from? I'm from (Jordan). I'm (Jordanian).",
+    vocabulary:"- Countries: Egypt, Jordan, Qatar, Spain, the United Kingdom, the United Arab Emirates\n- Nationalities: British, Egyptian, Emirati, Jordanian, Qatari, Spanish\n- Hobbies: canoeing, going shopping, playing basketball/football/table tennis/tennis, reading, swimming\n- Numbers: 1–100",
+    topics:"(W) New neighbours Let's get"},
+  {id:"1", title:"New school", pages:"SB : 8 to 17",
+    pronunciation:"/s/ /z/ /ɪz/ — likes, makes, reads, goes, brushes, watches",
+    attitudes:"- Respect for others through dialogues, group work, and roleplay\n- Respect for school roles and spaces\n- Confidence in communication\n- Appreciation of diversity",
+    functions:"Making arrangements: Do you want to play football tomorrow morning?",
+    structures:"Present simple with dates and times: We have Maths on Tuesdays at 11 o'clock.\nPresent simple with adverbs of frequency: She plays tennis twice a week.",
+    vocabulary:"- School subjects: Arabic, Art, English, Digital Skills, Maths, PE, Science, Social Studies\n- People and places in school: headteacher, school nurse, science lab\n- Adverbs of frequency: always, never, often, sometimes\n- Adverbial phrases: at the weekend, every day, once a week, twice a week, three times a week",
+    topics:"(1) New school"},
+  {id:"2", title:"Picnic time!", pages:"SB : 18 to 27",
+    pronunciation:"/iː/ — key, seat, tea, feet, dirty, see, happy, family",
+    attitudes:"- Cooperation and teamwork\n- Fairness and inclusion\n- Confidence in speaking and presenting\n- National pride and identity: recognizing the Jordanian flag and nationality supports a sense of belonging and pride in one's heritage",
+    functions:"Shopping for food: Can I help you? Can I have (six apples), please? Here you are! Anything else? No, that's it, thanks! That's (five dinars), please.",
+    structures:"There is / There are with countable and uncountable nouns: There's a lot of salad and a little lemonade.\nThere aren't any cupcakes. Are there any apples? Yes, there are. / No, there aren't.",
+    vocabulary:"- Food: cereal, cupcakes, fruit, noodles, olives, salad, sandwiches, vegetables\n- Drink: coffee, lemonade, milkshake, tea\n- Containers: a bag of, a bottle of, a bowl of, a box of, a can of, a cup of, a glass of, a plate of",
+    topics:"(2) Picnic time!"},
+  {id:"3", title:"Along the river", pages:"SB : 28 to 37",
+    pronunciation:"/aɪ/ — prize, bike, ride, bedtime, light, goodnight",
+    attitudes:"- Cultural awareness\n- Respect for others and diversity\n- Awareness of surroundings\n- Love and care for nature\n- Respectful dialogue",
+    functions:"Asking the way: Excuse me, can you tell me the way to (the park), please? Turn right (at the supermarket). Turn left (at the hospital). Go straight ahead. Go across the road. It's on the (left).",
+    structures:"Comparatives and superlatives — short adjectives: A mountain is higher than a hill. This is the deepest lake in the UK.\nComparatives and superlatives — long adjectives: Swimming is more exciting than walking. Amman is the most exciting city in the world.",
+    vocabulary:"- Landscapes: city, forest, hill, island, lake, mountain, river, town, waterfall\n- Adjectives: beautiful, boring, colourful, dangerous, deep, delicious, difficult, exciting, high, interesting, wide",
+    topics:"(3) Along the river"},
+  {id:"4", title:"All about jobs", pages:"SB : 38 to 48",
+    pronunciation:"/eɪ/ — snail, painting, rain, playing, hay, snake, cake",
+    attitudes:"- Respect for roles in society\n- Responsibility and rule-following\n- Respect for authority and order\n- Confidence in expressing rules and duties",
+    functions:"Calling the emergency services: What service do you need? I need an ambulance/the police/the fire brigade, please. What's your address/phone number? My address is… My phone number is… What's the emergency? He's got a broken leg.",
+    structures:"Present continuous: He's cooking. / They aren't playing a game. Are you wearing a green jacket?\nmust / mustn't: You must be quiet in class.",
+    vocabulary:"- Jobs: bus driver, carpenter, chef, doctor, farmer, firefighter, mechanic, police officer, scientist, teacher, vet, waiter/waitress\n- Rules: arrive on time, be late, be quiet in class, break the rules, drop litter, follow the rules, put litter in the bin, shout in class",
+    topics:"(4) All about jobs"}
+]},
+{ level:"5th", subject:"English", semester:"First semester", units:[
+  {id:"W", title:"Welcome back", pages:"SB : 4 to 8",
+    pronunciation:"………",
+    attitudes:"Using free time effectively.",
+    functions:"………",
+    structures:"Present simple with before/after/when",
+    vocabulary:"Free-time activities. Appearance.",
+    topics:"(W) Welcome back Let's get"},
+  {id:"1", title:"Talent show", pages:"SB : 8 to 20",
+    pronunciation:"The prefix un- for adjectives: untidy, unfriendly, unhappy, unlucky, unwell, unsafe",
+    attitudes:"Appreciation of good qualities and good manner.",
+    functions:"Describing people",
+    structures:"Comparative and superlative adjectives; be good at",
+    vocabulary:"Personality adjectives. Hobbies.",
+    topics:"(1) Talent show"},
+  {id:"2", title:"Then and now", pages:"SB : 20 to 32",
+    pronunciation:"Changing verbs to nouns using the suffix -tion: inform, information, describe, description",
+    attitudes:"The importance of technology and appreciating the past.",
+    functions:"Asking for information",
+    structures:"Past simple; could/couldn't",
+    vocabulary:"Technology: verbs related to technology.",
+    topics:"(2) Then and now"},
+  {id:"3", title:"Let's explore", pages:"SB : 32 to 36",
+    pronunciation:"Syllable stress with two- and three-syllable words: planet, spacesuit, rocket, satellite, astronaut, telescope, scientist, explorer",
+    attitudes:"The importance of science and all types of exploration.",
+    functions:"Asking for information",
+    structures:"will/won't; How…?",
+    vocabulary:"Space. Big numbers.",
+    topics:"(3) Let's explore"},
+  {id:"4", title:"Off to the shops", pages:"SB : 36 to 48",
+    pronunciation:"Changing verbs to nouns using the suffix -ment: pay, payment, encourage, encouragement",
+    attitudes:"Appreciating Earth's resources and crops as well as God's gifts.",
+    functions:"Asking for information",
+    structures:"Relative clauses; have to / don't have to",
+    vocabulary:"Shops. Money and prices.",
+    topics:"(4) Off to the shops"}
+]},
+{ level:"6th", subject:"English", semester:"First semester", units:[
+  {id:"W", title:"The WOW! Team", pages:"SB : 4 to 7",
+    pronunciation:"—",
+    attitudes:"- Respect for individual differences\n- Politeness and kindness\n- Empathy and understanding\n- Responsibility and independence\n- Sharing ideas and working together",
+    functions:"Describing personality (adjectives like friendly, shy, outgoing, etc.)",
+    structures:"Present simple: I'm 12 years old. I have dark, curly hair.",
+    vocabulary:"Personality adjectives: cheerful, confident, friendly, hard-working, kind, lazy, polite, quiet, responsible, shy, tidy, untidy",
+    topics:"(W) The WOW! Team"},
+  {id:"1", title:"Free-time fun", pages:"SB : 8 to 17",
+    pronunciation:"Identifying unstressed words: I can upload a photo. I go online and send a message.",
+    attitudes:"- Respect and cooperation\n- Confidence and self-expression\n- Helpfulness: asking questions to seek help or clarify shows a proactive and supportive attitude",
+    functions:"Making and responding to suggestions: Why don't you write a blog? That's a good idea.",
+    structures:"Present simple and present continuous: I play volleyball after school. I'm sitting straight now.\nState verbs: He prefers doing photography. It sounds good. Do you know this song?",
+    vocabulary:"- Sports: do archery, do athletics, do gymnastics, go cycling, go ice skating, go scooting, go skiing, go snowboarding, play badminton, play hockey, play table tennis, play volleyball\n- Hobbies: do photography, do puzzles, do the gardening, draw pictures, go to book fairs, go to museums, listen to audiobooks, make models, play board games, watch cartoons, write a blog, write a diary",
+    topics:"(1) Free-time fun"},
+  {id:"2", title:"Technology", pages:"SB : 18 to 31",
+    pronunciation:"Unstressed words and syllables: She climbed a hill to see a tower. The harbour is around the corner.",
+    attitudes:"- Respect for others: distinguishing expressions of politeness, requests, and invitations\n- Cooperation: turn-taking in dialogues and participating in interviews\n- Self-expression: presenting ideas and opinions visually or orally",
+    functions:"Giving directions in a building: It's upstairs. It's on the left.",
+    structures:"could/couldn't, had to/didn't have to: We could write. We couldn't use computers. We had to use a pen. He didn't have to write.\nComparative adverbs: It does everything more quickly than before. It takes photos better.",
+    vocabulary:"- Devices: app, device, digital camera, e-reader, headphones, laptop, password, printer, screen, smartphone, speaker, website\n- Using technology: click on an icon, download an app, go online, press a button, search the internet, send a message, take a selfie, turn off the TV, turn on the computer, type a password, upload a photo, watch a video",
+    topics:"(2) Technology"},
+  {id:"3", title:"Places", pages:"SB : 32 to 41",
+    pronunciation:"/aɪ/ — prize, bike, ride, bedtime, light, goodnight",
+    attitudes:"- Community pride: feeling connected to and proud of one's local environment and cultural heritage\n- Cooperation: working well with others to complete tasks and communicate effectively",
+    functions:"Giving directions in a building: It's upstairs. It's on the left.",
+    structures:"Comparatives and superlatives — short adjectives: A mountain is higher than a hill. This is the deepest lake in the UK.\nComparatives and superlatives — long adjectives: Swimming is more exciting than walking. Amman is the most exciting city in the world.",
+    vocabulary:"- Landscapes: city, forest, hill, island, lake, mountain, river, town, waterfall\n- Adjectives: beautiful, boring, colourful, dangerous, deep, delicious, difficult, exciting, high, interesting, wide",
+    topics:"(3) Places"},
+  {id:"4", title:"Happy homes", pages:"SB : 42 to 52",
+    pronunciation:"\"er\" versus the schwa sound: Shall we have dinner? The food is interesting.",
+    attitudes:"- Appreciation of culture\n- Responsibility\n- Respect for diversity: listening to stories and dialogues from different functions promotes openness to varied social and cultural contexts",
+    functions:"Offering to help: Shall I cook the noodles? What do you want us to do now?",
+    structures:"Present perfect with already, just and yet: I've just swept the floor. I've already eaten lunch. She hasn't cleared the table yet.\nSense verbs: What does it taste like? It smells delicious. It feels soft.",
+    vocabulary:"- Household chores: clear the table, cook the dinner, do the washing up, dust the furniture, empty the bin, load the dishwasher, put away the clothes, sweep the floor, take out the rubbish, tidy up, vacuum the carpet, water the plants\n- Cooking: add, bake, boil, chop, cut, fork, fry, knife, mix, pepper, salt, spoon",
+    topics:"(4) Happy homes"}
+]}
+];
+
+/* =======================================================================
+   MODULE 2 — TERM PLAN  (data transcribed from the six "Semester Plan"
+   files). Each grade carries a shared "template" (Reflection / Activities /
+   Assessment tool & strategy / Instructional strategies / Resources) that
+   repeats near-identically across its units, plus per-unit specifics
+   (title, duration, pages, outcomes, lesson numbers).
+   ======================================================================= */
+const TP_TEMPLATE_FIELDS = [
+  {key:"reflection",    label:"Reflection"},
+  {key:"activities",    label:"Related / Associated Activities"},
+  {key:"tool",          label:"Assessment Tool"},
+  {key:"strategy",      label:"Assessment Strategy"},
+  {key:"instructional", label:"Instructional Strategies"},
+  {key:"resources",     label:"Material / Resources"}
+];
+
+const ORIGINAL_DATA_TP = [
+{ level:"1st Grade", subject:"English", semester:"First",
+  template:{
+    reflection:"I feel satisfied with ...................\nChallenges that faced me ...................\nSuggestions for improvement ...................",
+    activities:"Using the internet. Using the computer. Preparing PowerPoint shows. Using the library. Writing reports.",
+    tool:"Checklist. Rating Scale.",
+    strategy:"Observation. Self-assessment. Performance-Based Assessment. Pencil & Paper Achievement Test.",
+    instructional:"- Presentation\n- Working in groups & in pairs\n- Discussion\n- Direct question\n- Critical thinking, Project",
+    resources:"Students' books. Activity books. White board. Flash cards. Laptop. Interactive Worksheet. Phone. Bluetooth Speaker."
+  },
+  units:[
+    {id:"W", title:"Welcome: Hello", duration:"23/8 – 15/9/2026", pagesSB:"4 to 6", pagesAB:"2 to 4", noClasses:"16", sessionNumbers:"1 2 3 4 6",
+      outcomes:"Students are expected to:\n- Introduce the characters.\n- Introduce colours and numbers.\n- Use vocabulary related to Numbers and colours.\n- Use basic informal expressions for greeting and leave-taking.\n- Use simple words to describe objects."},
+    {id:"1", title:"Unit 1: Family and Friends", duration:"16/9 – 7/10/2026", pagesSB:"6 to 13", pagesAB:"4 to 11", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14",
+      outcomes:"Students are expected to:\n- Introduce yourself.\n- Understand the main information when people introduce themselves.\n- Hear the initial sound in simple words.\n- Recognise familiar words and phrases in short, simple songs and chants.\n- Say the names of family members.\n- Use vocabulary related to Family and Pets.\n- Ask and answer questions about yourself and others.\n- Recognise everyday nouns and adjectives.\n- Repeat single words.\n- Sing a simple song.\n- Say the sounds for the letters of the alphabet.\n- Follow simple dialogues in short stories.\n- Trace individual letters to represent sounds.\n- Make finger puppets of a family."},
+    {id:"2", title:"Unit 2: My School Bag", duration:"8/10 – 29/10/2026", pagesSB:"14 to 21", pagesAB:"12 to 20", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14",
+      outcomes:"Students are expected to:\n- Talk about school objects.\n- Repeat single words.\n- Talk about things students have, using a basic phrase.\n- Sing a simple song.\n- Say the sounds for the letters of the alphabet.\n- Use vocabulary related to Classroom objects.\n- Use I've got … / I haven't got …\n- Recognise a few familiar everyday nouns and adjectives.\n- Understand basic phrases or sentences about things people have.\n- Recognize familiar words and phrases in short, simple songs or chants.\n- Hear the initial sound in simple words.\n- Follow simple dialogues in short stories.\n- Trace individual letters to represent sounds.\n- Make a school bag."},
+    {id:"3", title:"Unit 3: Our Classroom", duration:"1/11 – 22/11/2026", pagesSB:"22 to 29", pagesAB:"20 to 27", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14",
+      outcomes:"Students are expected to:\n- Talk about things in the classroom.\n- Say where things are.\n- Repeat single words.\n- Name everyday objects in their surroundings or in pictures.\n- Sing a simple song.\n- Say the sounds for the letters of the alphabet.\n- Talk about things people have.\n- Use vocabulary related to the classroom.\n- Use \"What's this? / It's a ...\"\n- Recognize familiar words and phrases in songs or chants.\n- Understand basic statements.\n- Follow simple dialogues in stories.\n- Trace individual letters to represent sounds.\n- Make a pen pot."},
+    {id:"4", title:"Unit 4: My Favorite Toy", duration:"23/11 – 14/12/2026", pagesSB:"30 to 38", pagesAB:"28 to 36", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16",
+      outcomes:"Students are expected to:\n- Talk about favourite toys and their colour.\n- Repeat single words.\n- Sing a simple song.\n- Talk about things people have.\n- Say the sounds for the letters of the alphabet.\n- Use vocabulary related to Toys and Feelings.\n- Ask and answer \"What colour is it? It's ... / What's your favourite toy? It's my …\"\n- Recognise everyday nouns and adjectives. Identify common objects.\n- Recognize familiar words and phrases in songs or chants.\n- Understand basic phrases or sentences about things people have.\n- Hear the initial, medial and final sound in simple words.\n- Follow simple dialogues in short stories.\n- Trace individual letters to represent sounds.\n- Write familiar CVC words.\n- Make a toy box."}
+  ]
+},
+{ level:"2nd Grade", subject:"English", semester:"First",
+  template:{
+    reflection:"I feel satisfied with ...................\nChallenges that faced me ...................\nSuggestions for improvement ...................",
+    activities:"Using the internet. Using the computer. Preparing PowerPoint shows. Using the library. Writing reports.",
+    tool:"Checklist. Rating Scale.",
+    strategy:"Observation. Self-assessment. Performance-Based Assessment. Pencil & Paper Achievement Test.",
+    instructional:"- Presentation\n- Working in groups & in pairs\n- Discussion\n- Direct question\n- Project",
+    resources:"Students' books. Activity books. White board. Flash cards. Laptop. Interactive Worksheet. Phone. Bluetooth Speaker."
+  },
+  units:[
+    {id:"W", title:"Welcome: Hello", duration:"23/8 – 15/9/2026", pagesSB:"4 to 7", pagesAB:"2 to 5", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11",
+      outcomes:"Students are expected to:\n- Introduce the characters; use polite interactions; count and recognise numbers; identify colours.\n- Recognise familiar words and basic phrases.\n- Understand the main information when people introduce themselves.\n- Recognise familiar words and phrases in short, simple songs or chants.\n- Act out parts of a picture story.\n- Recite a short, simple rhyme or chant.\n- Recognise key words and phrases in stories.\n- Recognise a range of basic everyday nouns and adjectives."},
+    {id:"1", title:"Unit 1: Look at My Toys!", duration:"16/9 – 7/10/2026", pagesSB:"8 to 15", pagesAB:"6 to 13", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15",
+      outcomes:"Students are expected to:\n- Recognise inside toys and outside toys.\n- Recognise a few familiar everyday nouns and adjectives.\n- Recognise familiar words and basic phrases.\n- Understand simple questions.\n- Recognise familiar words and phrases.\n- Recognise isolated words related to familiar topics.\n- Recognise the letters by their sounds.\n- Name everyday objects.\n- Recite a short, simple rhyme or chant; answer simple questions.\n- Express likes and dislikes.\n- Say simple tongue twisters.\n- Understand basic sentences naming familiar everyday items, if supported by pictures.\n- Write some familiar words and sentences.\n- Make a poster of a toy museum.\n- Draw toys and present information about drawings.\n- Name toys."},
+    {id:"2", title:"Unit 2: Where's My Pen?", duration:"8/10 – 29/10/2026", pagesSB:"16 to 23", pagesAB:"14 to 21", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16",
+      outcomes:"Students are expected to:\n- Name classroom objects; talk about classroom objects & say where they are.\n- Recognise a few familiar everyday nouns and adjectives.\n- Recognise familiar words and phrases.\n- Understand some basic words and phrases to show politeness.\n- Recognise the letters of the alphabet by their sounds.\n- Name everyday objects.\n- Recite a short, simple rhyme or chant.\n- Ask and answer simple questions about objects.\n- Take part in basic games; give the location of an object in a basic way.\n- Say simple tongue twisters.\n- Recognise key words and basic phrases.\n- Understand basic sentences naming familiar everyday items.\n- Write a few basic words & sentences.\n- Make a plan of a school.\n- Design objects and draw items to present to the class."},
+    {id:"3", title:"Unit 3: Move Your Body!", duration:"1/11 – 22/11/2026", pagesSB:"24 to 31", pagesAB:"22 to 29", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19",
+      outcomes:"Students are expected to:\n- Name body parts; talk about movement.\n- Recognise familiar words and phrases in short, simple songs or chants.\n- Recognise a few familiar everyday nouns and adjectives.\n- Recognise familiar words and basic phrases; understand basic action words.\n- Follow basic instructions to colour, draw or make something.\n- Recognise the letters by their sounds.\n- Use a few simple words to describe objects.\n- Recite a short, simple rhyme or chant.\n- Describe someone's physical appearance.\n- Give the location of an object.\n- Act out parts of a picture story.\n- Express likes and dislikes.\n- Say simple tongue twisters.\n- Understand basic sentences naming familiar everyday items.\n- Write a few basic sentences.\n- Make a poster about your favourite day at school."},
+    {id:"4", title:"Unit 4: Meet My Family", duration:"23/11 – 14/12/2026", pagesSB:"32 to 41", pagesAB:"30 to 38", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20",
+      outcomes:"Students are expected to:\n- Name family members; describe family members using parts of the face.\n- Recognise isolated words related to familiar topics.\n- Recognise familiar words and phrases in short, simple songs or chants.\n- Recognise familiar words and basic phrases.\n- Identify people in their surroundings or in pictures.\n- Understand basic phrases.\n- Understand the main information when people introduce themselves.\n- Recognise the letters of the alphabet by their sounds.\n- Answer simple questions.\n- Recite a short, simple rhyme or chant.\n- Act out parts of a picture story.\n- Describe someone's physical appearance.\n- Say simple tongue twisters.\n- Identify familiar words in short simple texts.\n- Write some familiar words.\n- Make a class art gallery.\n- Use role play to present a story."}
+  ]
+},
+{ level:"3rd Grade", subject:"English", semester:"First",
+  template:{
+    reflection:"I feel satisfied with ...................\nChallenges that faced me ...................\nSuggestions for improvement ...................",
+    activities:"Using the internet. Using the computer. Preparing PowerPoint shows. Using the library. Writing reports.",
+    tool:"Checklist. Rating Scale.",
+    strategy:"Observation. Self-assessment. Performance-Based Assessment. Pencil & Paper Achievement Test.",
+    instructional:"- Presentation\n- Working in groups & in pairs\n- Discussion\n- Direct question\n- Critical thinking, Project",
+    resources:"Students' books. Activity books. White board. Flash cards. Laptop. Interactive Worksheet. Phone. Bluetooth Speaker."
+  },
+  units:[
+    {id:"W", title:"W: Back to School", duration:"23/8 – 15/9/2026", pagesSB:"4 to 8", pagesAB:"2 to 5", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14",
+      outcomes:"Students are expected to:\n- Recognise the letters of the alphabet.\n- Recognize ordinal numbers up to twenty.\n- Label simple pictures.\n- Use the alphabet and numbers 11–20.\n- Use This is / These are / That is / Those are.\n- Understand the main information when people introduce themselves.\n- Identify everyday objects, people or animals.\n- Recognize familiar key words and descriptions.\n- Act out parts of a picture story.\n- Say the letters of the alphabet.\n- Introduce themselves.\n- Use cardinal numbers up to twenty.\n- Ask simple questions about numbers of objects.\n- Write letters of the alphabet.\n- Write cardinal numbers to twenty."},
+    {id:"1", title:"Unit 1: It's a Happy Day", duration:"16/9 – 7/10/2026", pagesSB:"8 to 17", pagesAB:"6 to 15", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19",
+      outcomes:"Students are expected to:\n- Follow simple dialogues in short stories.\n- Identify specific information in a story or text.\n- Understand the order of events.\n- Get the gist of short, simple texts.\n- Identify individual sounds in words.\n- Talk about daily routines and times of the day.\n- Use vocabulary related to daily routines and times of the day.\n- Recognise familiar words in songs.\n- Recognize simple phrases.\n- Recognize letters of the alphabet.\n- Recite a short, simple rhyme.\n- Answer simple questions about routines.\n- Describe objects in a basic way.\n- Act out parts of a story.\n- Say simple tongue twisters.\n- Write some familiar words.\n- Label simple pictures.\n- Write a single sentence about routines.\n- Make a breakfast menu."},
+    {id:"2", title:"Unit 2: Let's Dress Up!", duration:"8/10 – 29/10/2026", pagesSB:"20 to 35", pagesAB:"16 to 25", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17",
+      outcomes:"Students are expected to:\n- Identify people through short descriptions.\n- Understand basic sentences describing everyday items.\n- Understand the order of events.\n- Identify key information in short texts.\n- Describe clothes and personal possessions.\n- Use vocabulary related to Clothes & Personal possessions.\n- Use You're / They're / Your / Their.\n- Identify everyday objects, people or animals.\n- Say simple tongue twisters.\n- Identify letters of the alphabet by sounds.\n- Describe what someone is wearing.\n- Recite a short, simple rhyme.\n- Answer simple questions about daily routines.\n- Describe someone's clothes.\n- Write simple sentences.\n- Label simple pictures.\n- Make a poster about a special day."},
+    {id:"3", title:"Unit 3: The Activity Centre", duration:"1/11 – 22/11/2026", pagesSB:"28 to 37", pagesAB:"26 to 36", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20",
+      outcomes:"Students are expected to:\n- Identify people through descriptions.\n- Understand sentences about everyday items.\n- Understand the order of events.\n- Get the gist of short, simple texts.\n- Identify key information in texts.\n- Identify individual sounds in words.\n- Describe activities and days of the week.\n- Use vocabulary related to Activities and days of the week.\n- Recognise familiar words and phrases in songs.\n- Identify everyday objects, people or animals.\n- Recognise basic time words.\n- Understand expressions about likes and dislikes.\n- Recognise letters of the alphabet by sounds.\n- Understand spoken commands.\n- Recite a short, simple rhyme.\n- Describe daily routines.\n- Act out parts of a story.\n- Make simple arrangements & say tongue twisters.\n- Write sentences and label pictures.\n- Make a poster about a special day."},
+    {id:"4", title:"Unit 4: I Want To Be a Teacher!", duration:"23/11 – 14/12/2026", pagesSB:"38 to 48", pagesAB:"36 to 46", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19",
+      outcomes:"Students are expected to:\n- Describe jobs and means of transport.\n- Understand phrases related to everyday activities.\n- Identify people from a short description.\n- Understand basic information about likes and dislikes.\n- Understand the order of events.\n- Get the gist of short, simple texts.\n- Identify individual sounds in words.\n- Use vocabulary related to Jobs and Transport.\n- Recognise familiar words in songs.\n- Understand information about jobs, prices, times and dates.\n- Recognize letters of the alphabet by sounds.\n- Recite a short, simple rhyme.\n- Express likes and dislikes.\n- Describe daily routines.\n- Act out parts of a story.\n- Answer questions about objects, times & events.\n- Say simple tongue twisters.\n- Write some familiar words and sentences.\n- Make a graph about how you go to school."}
+  ]
+},
+{ level:"4th Grade", subject:"English", semester:"First",
+  template:{
+    reflection:"I feel satisfied with ...................\nChallenges that faced me ...................\nSuggestions for improvement ...................",
+    activities:"Using the internet. Using the computer. Preparing PowerPoint shows. Using the library. Writing reports.",
+    tool:"Checklist. Rating Scale.",
+    strategy:"Observation. Self-assessment. Performance-Based Assessment. Pencil & Paper Achievement Test.",
+    instructional:"- Presentation\n- Working in groups & in pairs\n- Discussion\n- Direct question\n- Project",
+    resources:"Students' books. Activity books. White board. Flash cards. Laptop. Interactive Worksheet. Phone. Bluetooth Speaker."
+  },
+  units:[
+    {id:"W", title:"W: New Neighbours", duration:"23/8 – 15/9/2026", pagesSB:"4 to 7", pagesAB:"2 to 5", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7",
+      outcomes:"Students are expected to:\n- Talk about hobbies, where people are from and their nationality, and learn the numbers 1–100.\n- Understand key information.\n- Talk about furniture and rooms using simple language.\n- Act out parts of a picture story using simple actions and words.\n- Follow simple dialogues in stories; identify key information in a story.\n- Write and present riddles to the class."},
+    {id:"1", title:"Unit 1: New School", duration:"16/9 – 7/10/2026", pagesSB:"8 to 17", pagesAB:"6 to 13", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16",
+      outcomes:"Students are expected to:\n- Talk about school subjects, people and places in a school.\n- Recognize basic time words.\n- Recognize familiar words and phrases in songs or chants.\n- Identify specific information in dialogues.\n- Ask and answer simple questions.\n- Say single words and talk about school subjects.\n- Predict what will happen next.\n- Retell a familiar story.\n- Act out parts of a picture story.\n- Sing a song from memory.\n- Say tongue-twisters.\n- Follow simple dialogues and sequence of events.\n- Understand likes and main themes of a story.\n- Write simple sentences.\n- Make a poster about your perfect school."},
+    {id:"2", title:"Unit 2: Picnic Time!", duration:"8/10 – 29/10/2026", pagesSB:"18 to 27", pagesAB:"14 to 21", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20",
+      outcomes:"Students are expected to:\n- Talk about food.\n- Recognise and understand topic words and phrases.\n- Identify objects from spoken descriptions.\n- Understand details in conversations.\n- Understand simple expressions about likes and dislikes.\n- Name everyday objects, animals and people.\n- Read words aloud.\n- Ask questions in guessing games.\n- Act out parts of a picture story.\n- Answer simple questions.\n- Express likes and give reasons.\n- Order food and drink.\n- Say simple tongue twisters.\n- Give simple instructions.\n- Recognise single words.\n- Extract factual details.\n- Follow simple recipes.\n- Scan a simple text to find information.\n- Write simple sentences, instructions, recipes.\n- Make a poster about special foods from Jordan."},
+    {id:"3", title:"Unit 3: Along the River", duration:"1/11 – 22/11/2026", pagesSB:"28 to 37", pagesAB:"22 to 29", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23",
+      outcomes:"Students are expected to:\n- Talk about landscapes.\n- Describe words; follow the sequence of events.\n- Understand comparisons.\n- Recognise nouns and adjectives.\n- Understand simple directions.\n- Follow the sequence of events in a story.\n- Name everyday objects.\n- Read aloud single words.\n- Ask questions to find the answer.\n- Name items of clothing.\n- Predict what will happen next.\n- Act out parts of a picture story.\n- Make comparisons between people or things.\n- Talk about a place.\n- Give reasons to explain preferences.\n- Ask for directions.\n- Say tongue twisters.\n- Follow simple dialogues.\n- Scan a simple text to find information.\n- Write simple sentences; use capital letters.\n- Make a leaflet about a national park in Jordan."},
+    {id:"4", title:"Unit 4: All About Jobs", duration:"23/11 – 14/12/2026", pagesSB:"38 to 48", pagesAB:"30 to 38", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22",
+      outcomes:"Students are expected to:\n- Talk about jobs and rules.\n- Recognise words; identify people.\n- Recognise words and phrases in songs or chants.\n- Identify a caller's name and phone number.\n- Understand information about jobs.\n- Identify key information in dialogues.\n- Read aloud single words.\n- Answer questions in guessing games.\n- Act out a picture story.\n- Say what people are doing.\n- Sing a song from memory.\n- Act out a short dialogue or role play.\n- Say simple tongue twisters.\n- Talk about plans for the near future.\n- Follow simple dialogues in illustrated stories.\n- Identify key information; understand details in dialogues.\n- Extract specific information.\n- Write a job survey.\n- Make a job book."}
+  ]
+},
+{ level:"5th Grade", subject:"English", semester:"First",
+  template:{
+    reflection:"I feel satisfied with ...................\nChallenges that faced me ...................\nSuggestions for improvement ...................",
+    activities:"Using the internet. Using the computer. Preparing PowerPoint shows. Using the library. Writing reports.",
+    tool:"Checklist. Rating Scale.",
+    strategy:"Observation. Self-assessment. Performance-Based Assessment. Pencil & Paper Achievement Test.",
+    instructional:"- Presentation\n- Working in groups & in pairs\n- Discussion\n- Direct question\n- Critical thinking, Project",
+    resources:"Students' books. Activity books. White board. Flash cards. Laptop. Interactive Worksheet. Phone. Bluetooth Speaker."
+  },
+  units:[
+    {id:"W", title:"W: Welcome Back", duration:"23/8 – 15/9/2026", pagesSB:"4 to 8", pagesAB:"2 to 5", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11",
+      outcomes:"Students are expected to:\n- Identify specific information in a simple story.\n- Understand the correct sequence of events.\n- Understand basic sentences describing someone's physical appearance.\n- Describe free-time activities.\n- Talk about appearance.\n- Use vocabulary related to Free-time activities and Appearance.\n- Use Present simple with before/after/when.\n- Follow the sequence of events in a simple story or narrative.\n- Describe daily routines.\n- Describe someone's physical appearance.\n- Write short, simple descriptions of people's physical appearance."},
+    {id:"1", title:"Unit 1: Talent Show", duration:"16/9 – 7/10/2026", pagesSB:"8 to 19", pagesAB:"6 to 17", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12",
+      outcomes:"Students are expected to:\n- Follow the sequence of events in a simple story or narrative.\n- Identify people in their immediate surroundings or in pictures.\n- Describe personality & talk about hobbies.\n- Use vocabulary related to Personality adjectives and Hobbies.\n- Use Comparative and superlative adjectives; \"be good at.\"\n- Follow the sequence of events in a story.\n- Describe someone's physical appearance.\n- Make simple, direct comparisons between two people or things.\n- Write short, simple descriptions of people's physical appearance.\n- Make simple comparisons between people, places or things.\n- Write a short description of a person.\n- Make a good manners book."},
+    {id:"2", title:"Unit 2: Then and Now", duration:"8/10 – 29/10/2026", pagesSB:"20 to 35", pagesAB:"18 to 31", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14",
+      outcomes:"Students are expected to:\n- Identify key information in short, simple factual texts.\n- Get the gist of short, simple texts.\n- Identify the main idea of a paragraph.\n- Talk about technology.\n- Use vocabulary related to Technology.\n- Use Past simple and could/couldn't.\n- Follow the sequence of events in a simple story.\n- Extract factual information from short, simple dialogues or stories.\n- Identify the context of short, simple dialogues.\n- Talk about past events or experiences.\n- Express ability or lack of ability.\n- Describe differences between two pictures.\n- Write about past activities.\n- Write a guide to a museum."},
+    {id:"3", title:"Unit 3: Let's Explore!", duration:"1/11 – 22/11/2026", pagesSB:"36 to 47", pagesAB:"32 to 43", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14",
+      outcomes:"Students are expected to:\n- Get the gist of short, simple texts.\n- Scan a simple text to find specific information.\n- Extract specific information from texts.\n- Talk about space and use big numbers.\n- Use vocabulary related to Space & Big numbers.\n- Use will/won't & How…?\n- Follow the sequence of events.\n- Identify specific information in short, simple dialogues.\n- Identify key information about future plans.\n- Talk about plans.\n- Tell a simple story.\n- Write a short, simple guide to a town/city.\n- Write short emails/letters.\n- Make a class book about ancient places."},
+    {id:"4", title:"Unit 4: Off To The Shops", duration:"23/11 – 14/12/2026", pagesSB:"48 to 60", pagesAB:"44 to 55", noClasses:"16", sessionNumbers:"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15",
+      outcomes:"Students are expected to:\n- Extract specific information in short texts.\n- Identify key information in texts.\n- Scan a simple text to find information.\n- Identify the overall theme of a story.\n- Talk about shops, money and prices.\n- Use vocabulary related to Shops, Money and prices.\n- Use Relative clauses; have to / don't have to.\n- Follow the sequence of events in a story.\n- Identify key information in a description.\n- Describe everyday activities in town.\n- Describe common everyday objects.\n- Express opinions.\n- Write simple sentences.\n- Write short, simple texts.\n- Make a TV advert for a corner shop."}
+  ]
+},
+{ level:"6th Grade", subject:"English Language", semester:"First",
+  template:{
+    reflection:"I feel content with ...................\nChallenges ...................\nSuggestions for improvement ...................",
+    activities:"- Games\n- Worksheets\n- Using the computer.\n- Using the library.\n- Writing newsletter\n- Writing Reports\n- Using the Internet\n- Writing a short description\n- Doing different activities from the book\n- Debating\n- Group Work",
+    tool:"1- Checklist\n2- Rating scale\n6- Others",
+    strategy:"1- Performance Based Assessment\n2- Pencil and paper\n3- Observation\n4- Communication\n5- Reflection\n6- Others",
+    instructional:"1- Direct instruction.\n2- Problem-solving induction\n3- Group work\n4- Active-based learning\n5- Critical Thinking\n6- others",
+    resources:"- Student's book\n- Activity book\n- Pictures\n- Whiteboard\n- Audio Recording\n- Teacher's Book\n- Videos\n- Smart Board\n- Real object\n- Flashcards\n- Realia"
+  },
+  units:[
+    {id:"W", title:"Welcome: The WOW! Team", duration:"24/8 – 11/9", pagesSB:"4 to 7", pagesAB:"2 to 3", noClasses:"14", sessionNumbers:"1 2 3 4 5 6",
+      outcomes:"Pupils are expected to:\n- Describe physical appearance and use personality adjectives.\n- Understand short/rich-read messages in emails, text messages and social media postings.\n- Scan short/simple texts to focus on the same topic to find specific information.\n- Understand the main ideas of a simple news story, with some support.\n- Give brief reasons for their opinions on familiar topics.\n- Write some familiar words."},
+    {id:"1", title:"Unit 1: Free-time Fun", duration:"14/11 – 7/10", pagesSB:"8 to 17", pagesAB:"4 to 13", noClasses:"18", sessionNumbers:"1 2 3 4 5 6 7 8",
+      outcomes:"Pupils are expected to:\n- Learn words for sports and hobbies.\n- Use the Present simple and Present continuous tenses.\n- Use state verbs.\n- Read a picture story.\n- Learn about sports and hobbies in different countries.\n- Work in a group to make a library of mini-books.\n- Learn how to make and respond to suggestions.\n- Read and write an interview about a sport or hobby."},
+    {id:"2", title:"Unit 2: Technology", duration:"8/10 – 30/10", pagesSB:"18 to 27", pagesAB:"14 to 23", noClasses:"18", sessionNumbers:"1 2 3 4 5 6 7 8",
+      outcomes:"Pupils are expected to:\n- Learn some words about technology.\n- Use could/couldn't and had to/didn't have to.\n- Use comparative adverbs.\n- Read a poem.\n- Discover how technology is helping children learn.\n- Work in a group to make a spider diagram.\n- Find out how to ask for help.\n- Read and write reviews of games and apps."},
+    {id:"3", title:"Unit 3: Places", duration:"2/11 – 25/11", pagesSB:"32 to 41", pagesAB:"26 to 35", noClasses:"", sessionNumbers:"1 2 3 4 5 6 7 8",
+      outcomes:"Pupils are expected to:\n- Learn some words for places and parts of buildings.\n- Use relative pronouns.\n- Use the Past continuous.\n- Read a mystery story.\n- Find out about ancient cities around the world.\n- Work in a group to make a brochure about an ancient city.\n- Learn how to give directions in a building.\n- Read and write short stories."},
+    {id:"4", title:"Unit 4: Happy Homes", duration:"26/11 – 18/12", pagesSB:"42 to 51", pagesAB:"36 to 45", noClasses:"", sessionNumbers:"1 2 3 4 5 6 7 8",
+      outcomes:"Pupils are expected to:\n- Learn some words for jobs at home and things in the kitchen.\n- Use the Present perfect tense with already, just and yet.\n- Use sense verbs (look, smell, taste, sound, feel).\n- Read a playscript.\n- Find out about traditional food around the world.\n- Work in a group to make a menu for an international food festival.\n- Learn how to offer to help.\n- Read and write recipes."}
+  ]
+}
+];
+
+/* =======================================================================
+   SHARED STATE & UTILITIES
+   ======================================================================= */
+let mode = "ca"; // "ca" | "tp"
+let state = {
+  ca: JSON.parse(JSON.stringify(ORIGINAL_DATA_CA)),
+  tp: JSON.parse(JSON.stringify(ORIGINAL_DATA_TP))
+};
+let activeGrade = { ca:0, tp:0 };
+
+const modeNav = document.getElementById("modeNav");
+const gradeNav = document.getElementById("gradeNav");
+const gradeFields = document.getElementById("gradeFields");
+const unitsContainer = document.getElementById("unitsContainer");
+const hintText = document.getElementById("hintText");
+
+function escAttr(s){
+  return String(s || "").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+}
+function escHtml(s){
+  return String(s || "")
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/\n/g,"<br>");
+}
+function autosize(ta){
+  ta.style.height = "auto";
+  ta.style.height = Math.max(80, ta.scrollHeight + 2) + "px";
+}
+
+function renderModeNav(){
+  modeNav.innerHTML = "";
+  [["ca","Content Analysis"], ["tp","Term Plan"]].forEach(([key, label]) => {
+    const b = document.createElement("button");
+    b.textContent = label;
+    b.className = mode === key ? "active" : "";
+    b.onclick = () => { mode = key; renderAll(); };
+    modeNav.appendChild(b);
+  });
+}
+
+function renderNav(){
+  gradeNav.innerHTML = "";
+  state[mode].forEach((g, i) => {
+    const b = document.createElement("button");
+    b.textContent = g.level.replace(/(st|nd|rd|th)\s*Grade/i, "$&").replace(/^([0-9]+)(st|nd|rd|th).*/i, "$1$2 grade");
+    b.className = i === activeGrade[mode] ? "active" : "";
+    b.onclick = () => { activeGrade[mode] = i; renderAll(); };
+    gradeNav.appendChild(b);
+  });
+}
+
+function renderGradeFields(){
+  const g = state[mode][activeGrade[mode]];
+  gradeFields.innerHTML = `
+    <div class="field"><label>Subject</label><input data-bind="subject" value="${escAttr(g.subject)}"></div>
+    <div class="field"><label>Class / Level</label><input data-bind="level" value="${escAttr(g.level)}"></div>
+    <div class="field"><label>Semester</label><input data-bind="semester" value="${escAttr(g.semester)}"></div>
+  `;
+  gradeFields.querySelectorAll("input").forEach(inp => {
+    inp.addEventListener("input", () => {
+      g[inp.dataset.bind] = inp.value;
+      if(inp.dataset.bind === "level") renderNav();
+    });
+  });
+}
+
+/* ---------- Content Analysis unit rendering ---------- */
+function renderUnitsCA(g){
+  unitsContainer.innerHTML = "";
+  g.units.forEach((u, ui) => {
+    const card = document.createElement("div");
+    card.className = "unit-card";
+
+    const bar = document.createElement("div");
+    bar.className = "unit-bar";
+    bar.innerHTML = `
+      <span class="tag">Unit ${escAttr(u.id)}</span>
+      <input class="title" data-field="title" value="${escAttr(u.title)}" placeholder="Unit title">
+      <input class="meta" data-field="pages" value="${escAttr(u.pages)}" placeholder="Pages, e.g. SB : 4 to 12">
+      <button class="remove" data-action="remove">✕ Remove unit</button>
+    `;
+    bar.querySelector('[data-field="title"]').addEventListener("input", e => u.title = e.target.value);
+    bar.querySelector('[data-field="pages"]').addEventListener("input", e => u.pages = e.target.value);
+    bar.querySelector('[data-action="remove"]').addEventListener("click", () => {
+      g.units.splice(ui, 1);
+      renderUnitsCA(g);
+    });
+
+    const table = document.createElement("table");
+    table.className = "analysis";
+    const thead = document.createElement("tr");
+    CA_COLUMNS.forEach(c => {
+      const th = document.createElement("th");
+      th.textContent = c.label;
+      thead.appendChild(th);
+    });
+    table.appendChild(thead);
+
+    const row = document.createElement("tr");
+    CA_COLUMNS.forEach(c => {
+      const td = document.createElement("td");
+      const ta = document.createElement("textarea");
+      ta.value = u[c.key] || "";
+      ta.addEventListener("input", () => { u[c.key] = ta.value; autosize(ta); });
+      td.appendChild(ta);
+      row.appendChild(td);
+    });
+    table.appendChild(row);
+
+    card.appendChild(bar);
+    card.appendChild(table);
+    unitsContainer.appendChild(card);
+  });
+  unitsContainer.querySelectorAll("table.analysis textarea").forEach(autosize);
+}
+
+/* ---------- Term Plan unit rendering ----------
+   Renders the exact same table shape as the original "Semester Plan"
+   files: Reflection | Related Activities | Assessment (Tool / Strategy)
+   | Instructional Strategies | Material/Resources | Outcomes | No.
+   The six template cells (Reflection…Resources) are shared per grade —
+   editing any copy of one updates every other unit's copy live. */
+function renderUnitsTP(g){
+  unitsContainer.innerHTML = "";
+  g.units.forEach((u, ui) => {
+    const card = document.createElement("div");
+    card.className = "unit-card";
+
+    const bar = document.createElement("div");
+    bar.className = "unit-bar";
+    bar.innerHTML = `
+      <span class="tag">Unit ${escAttr(u.id)}</span>
+      <input class="title" data-field="title" value="${escAttr(u.title)}" placeholder="Unit title">
+      <input class="meta" data-field="duration" value="${escAttr(u.duration)}" placeholder="Duration">
+      <input class="meta" data-field="pagesSB" value="${escAttr(u.pagesSB)}" placeholder="Pages SB">
+      <input class="meta" data-field="pagesAB" value="${escAttr(u.pagesAB)}" placeholder="Pages AB">
+      <input class="meta" style="width:96px" data-field="noClasses" value="${escAttr(u.noClasses)}" placeholder="No. of classes">
+      <button class="remove" data-action="remove">✕ Remove unit</button>
+    `;
+    ["title","duration","pagesSB","pagesAB","noClasses"].forEach(f => {
+      bar.querySelector(`[data-field="${f}"]`).addEventListener("input", e => u[f] = e.target.value);
+    });
+    bar.querySelector('[data-action="remove"]').addEventListener("click", () => {
+      g.units.splice(ui, 1);
+      renderUnitsTP(g);
+    });
+
+    const table = document.createElement("table");
+    table.className = "analysis tp-table";
+    table.innerHTML = `
+      <tr>
+        <th>No.</th>
+        <th>Outcomes</th>
+        <th>Material / Resources</th>
+        <th>Instructional Strategies</th>
+        <th colspan="2">Assessment</th>
+        <th>Related Activities</th>
+        <th>Reflection</th>
+      </tr>
+      <tr>
+        <td rowspan="2"><textarea data-unit="sessionNumbers"></textarea></td>
+        <td rowspan="2"><textarea data-unit="outcomes"></textarea></td>
+        <td rowspan="2"><textarea data-tpl="resources"></textarea></td>
+        <td rowspan="2"><textarea data-tpl="instructional"></textarea></td>
+        <td class="tp-subhead">Strategy</td>
+        <td class="tp-subhead">Tool</td>
+        <td rowspan="2"><textarea data-tpl="activities"></textarea></td>
+        <td rowspan="2"><textarea data-tpl="reflection"></textarea></td>
+      </tr>
+      <tr>
+        <td><textarea data-tpl="strategy"></textarea></td>
+        <td><textarea data-tpl="tool"></textarea></td>
+      </tr>
+    `;
+
+    table.querySelectorAll("textarea[data-tpl]").forEach(ta => {
+      const key = ta.dataset.tpl;
+      ta.value = g.template[key] || "";
+      ta.addEventListener("input", () => {
+        g.template[key] = ta.value;
+        table2querySelectorAllSync(key, ta.value);
+        autosize(ta);
+      });
+    });
+    table.querySelectorAll("textarea[data-unit]").forEach(ta => {
+      const key = ta.dataset.unit;
+      ta.value = u[key] || "";
+      ta.addEventListener("input", () => { u[key] = ta.value; autosize(ta); });
+    });
+
+    const wrap = document.createElement("div");
+    wrap.className = "tp-table-wrap";
+    wrap.appendChild(table);
+
+    card.appendChild(bar);
+    card.appendChild(wrap);
+    unitsContainer.appendChild(card);
+  });
+
+  function table2querySelectorAllSync(key, value){
+    unitsContainer.querySelectorAll(`textarea[data-tpl="${key}"]`).forEach(other => {
+      if(document.activeElement !== other) other.value = value;
+    });
+  }
+
+  unitsContainer.querySelectorAll("table.tp-table textarea").forEach(autosize);
+}
+
+function renderUnits(){
+  const g = state[mode][activeGrade[mode]];
+  if(mode === "ca") renderUnitsCA(g); else renderUnitsTP(g);
+}
+
+function renderAll(){
+  renderModeNav();
+  renderNav();
+  renderGradeFields();
+  renderUnits();
+  hintText.textContent = mode === "ca"
+    ? "Everything below is editable — type directly into any cell."
+    : "Everything below is editable. Reflection, Activities, Assessment, Instructional Strategies and Resources are shared across this grade's units — edit any copy and the rest update automatically.";
+}
+
+/* ---------- Add unit ---------- */
+document.getElementById("addUnitBtn").addEventListener("click", () => {
+  const g = state[mode][activeGrade[mode]];
+  const nextNum = g.units.filter(u => /^\d+$/.test(u.id)).length + 1;
+  if(mode === "ca"){
+    g.units.push({
+      id:String(nextNum), title:"New unit", pages:"SB : ",
+      pronunciation:"", attitudes:"", functions:"", structures:"", vocabulary:"", topics:""
+    });
+  } else {
+    g.units.push({
+      id:String(nextNum), title:"New unit", duration:"", pagesSB:"", pagesAB:"", noClasses:"",
+      sessionNumbers:"", outcomes:"Students are expected to:\n- "
+    });
+  }
+  renderUnits();
+});
+
+/* ---------- Reset ---------- */
+document.getElementById("resetGradeBtn").addEventListener("click", () => {
+  const src = mode === "ca" ? ORIGINAL_DATA_CA : ORIGINAL_DATA_TP;
+  state[mode][activeGrade[mode]] = JSON.parse(JSON.stringify(src[activeGrade[mode]]));
+  renderAll();
+  showToast("Grade reset to the original file content.");
+});
+
+/* =======================================================================
+   WORD (.doc) EXPORT — works fully offline, no external libraries.
+   Produces a real, fully editable Word document (table formatting,
+   fonts, etc. all intact) using Word's own HTML import format.
+   ======================================================================= */
+function wrapWordDocument(bodyHtml, title){
+  return `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>${escHtml(title)}</title>
+<!--[if gte mso 9]>
+<xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml>
+<![endif]-->
+<style>
+  @page { size:842.4pt 595.3pt; mso-page-orientation:landscape; margin:1in 0.5in 1in 0.5in; }
+  body { font-family:Calibri, Arial, sans-serif; }
+  table { border-collapse:collapse; }
+  td, th { border:1px solid #444; padding:6px; }
+</style>
+</head>
+<body>${bodyHtml}</body>
+</html>`;
+}
+
+function downloadDoc(html, filename){
+  const blob = new Blob(['\ufeff', html], { type: "application/msword" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* ---- Content Analysis export ---- */
+function gradeToWordBodyCA(g){
+  let html = `<h1 style="font-family:Calibri,Arial,sans-serif;">Content Analysis</h1>
+  <h2 style="font-family:Calibri,Arial,sans-serif;">Subject: ${escHtml(g.subject)}</h2>`;
+  g.units.forEach(u => {
+    html += `<p style="font-family:Calibri,Arial,sans-serif;font-size:11pt;">
+      Class/Level: ${escHtml(g.level)} &nbsp;&nbsp;&nbsp; ${escHtml(g.semester)} &nbsp;&nbsp;&nbsp;
+      <b>Unit Title (${escHtml(u.id)}): ${escHtml(u.title)}</b> &nbsp;&nbsp;&nbsp; Pages ${escHtml(u.pages)}</p>`;
+    html += `<table style="border-collapse:collapse;width:100%;" border="1" cellspacing="0" cellpadding="6">
+      <tr>${CA_COLUMNS.map(c => `<th style="background:#D9E2F3;font-family:Calibri,Arial,sans-serif;font-size:10pt;text-align:left;">${c.label}</th>`).join("")}</tr>
+      <tr>${CA_COLUMNS.map(c => `<td style="font-family:Calibri,Arial,sans-serif;font-size:10.5pt;vertical-align:top;">${escHtml(u[c.key])}</td>`).join("")}</tr>
+    </table>
+    <p style="font-family:Calibri,Arial,sans-serif;font-size:8pt;color:#666;">Form # QF71-1-49 rev. a</p>
+    <br>`;
+  });
+  return html;
+}
+
+/* ---- Term Plan export ---- */
+function gradeToWordBodyTP(g){
+  let html = `<h1 style="font-family:Calibri,Arial,sans-serif;">First Semester Plan</h1>
+  <h2 style="font-family:Calibri,Arial,sans-serif;">Subject: ${escHtml(g.subject)}</h2>`;
+  g.units.forEach(u => {
+    html += `<p style="font-family:Calibri,Arial,sans-serif;font-size:11pt;">
+      Class/Level: ${escHtml(g.level)} &nbsp;&nbsp;&nbsp; Semester: ${escHtml(g.semester)} &nbsp;&nbsp;&nbsp;
+      <b>Unit (${escHtml(u.id)}): ${escHtml(u.title)}</b> &nbsp;&nbsp;&nbsp;
+      Pages SB: ${escHtml(u.pagesSB)} &nbsp; AB: ${escHtml(u.pagesAB)} &nbsp;&nbsp;&nbsp;
+      No. of Classes: ${escHtml(u.noClasses)} &nbsp;&nbsp;&nbsp; Duration: ${escHtml(u.duration)}</p>`;
+    html += `<table style="border-collapse:collapse;width:100%;" border="1" cellspacing="0" cellpadding="6">
+      <tr>
+        <th style="background:#D9E2F3;font-family:Calibri,Arial,sans-serif;font-size:9.5pt;">No.</th>
+        <th style="background:#D9E2F3;font-family:Calibri,Arial,sans-serif;font-size:9.5pt;">Outcomes</th>
+        <th style="background:#D9E2F3;font-family:Calibri,Arial,sans-serif;font-size:9.5pt;">Material / Resources</th>
+        <th style="background:#D9E2F3;font-family:Calibri,Arial,sans-serif;font-size:9.5pt;">Instructional Strategies</th>
+        <th style="background:#D9E2F3;font-family:Calibri,Arial,sans-serif;font-size:9.5pt;" colspan="2">Assessment</th>
+        <th style="background:#D9E2F3;font-family:Calibri,Arial,sans-serif;font-size:9.5pt;">Related Activities</th>
+        <th style="background:#D9E2F3;font-family:Calibri,Arial,sans-serif;font-size:9.5pt;">Reflection</th>
+      </tr>
+      <tr>
+        <td rowspan="2" style="font-family:Calibri,Arial,sans-serif;font-size:9.5pt;vertical-align:top;">${escHtml(u.sessionNumbers)}</td>
+        <td rowspan="2" style="font-family:Calibri,Arial,sans-serif;font-size:9.5pt;vertical-align:top;">${escHtml(u.outcomes)}</td>
+        <td rowspan="2" style="font-family:Calibri,Arial,sans-serif;font-size:9.5pt;vertical-align:top;">${escHtml(g.template.resources)}</td>
+        <td rowspan="2" style="font-family:Calibri,Arial,sans-serif;font-size:9.5pt;vertical-align:top;">${escHtml(g.template.instructional)}</td>
+        <td style="background:#eef1f5;font-family:Calibri,Arial,sans-serif;font-size:9pt;">Strategy</td>
+        <td style="background:#eef1f5;font-family:Calibri,Arial,sans-serif;font-size:9pt;">Tool</td>
+        <td rowspan="2" style="font-family:Calibri,Arial,sans-serif;font-size:9.5pt;vertical-align:top;">${escHtml(g.template.activities)}</td>
+        <td rowspan="2" style="font-family:Calibri,Arial,sans-serif;font-size:9.5pt;vertical-align:top;">${escHtml(g.template.reflection)}</td>
+      </tr>
+      <tr>
+        <td style="font-family:Calibri,Arial,sans-serif;font-size:9.5pt;vertical-align:top;">${escHtml(g.template.strategy)}</td>
+        <td style="font-family:Calibri,Arial,sans-serif;font-size:9.5pt;vertical-align:top;">${escHtml(g.template.tool)}</td>
+      </tr>
+    </table>
+    <p style="font-family:Calibri,Arial,sans-serif;font-size:8pt;color:#666;">Form # QF71-1-49 rev. a</p>
+    <br>`;
+  });
+  return html;
+}
+
+function gradeToWordBody(g){
+  return mode === "ca" ? gradeToWordBodyCA(g) : gradeToWordBodyTP(g);
+}
+
+document.getElementById("downloadGradeBtn").addEventListener("click", () => {
+  const g = state[mode][activeGrade[mode]];
+  const body = gradeToWordBody(g);
+  const label = mode === "ca" ? "Content_Analysis" : "Term_Plan";
+  const title = `${mode === "ca" ? "Content Analysis" : "First Semester Plan"} - Grade ${g.level}`;
+  downloadDoc(wrapWordDocument(body, title), `${label}_Grade_${g.level.replace(/\D/g,"")}.doc`);
+  showToast(`Downloaded Grade ${g.level} ${mode === "ca" ? "content analysis" : "term plan"}.`);
+});
+
+document.getElementById("downloadAllBtn").addEventListener("click", () => {
+  let body = "";
+  state[mode].forEach((g, i) => {
+    body += gradeToWordBody(g);
+    if(i < state[mode].length - 1){
+      body += `<br clear="all" style="page-break-before:always">`;
+    }
+  });
+  const label = mode === "ca" ? "Content_Analysis" : "Term_Plan";
+  const title = mode === "ca" ? "Content Analysis - Grades 1-6" : "First Semester Plan - Grades 1-6";
+  downloadDoc(wrapWordDocument(body, title), `${label}_Grades_1-6.doc`);
+  showToast(`Downloaded all 6 grades (${mode === "ca" ? "content analysis" : "term plan"}) in one Word file.`);
+});
+
+/* ---------- Toast ---------- */
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+/* ---------- Deep-link support (from the cover page) ----------
+   Hash formats: #ca, #tp, #ca-3, #tp-6 (module + optional grade 1-6) */
+function applyHash(){
+  const h = location.hash.replace("#", "");
+  if(!h) return;
+  const [m, gradeNum] = h.split("-");
+  if(m === "ca" || m === "tp") mode = m;
+  if(gradeNum){
+    const idx = parseInt(gradeNum, 10) - 1;
+    if(idx >= 0 && idx < state[mode].length) activeGrade[mode] = idx;
+  }
+}
+
+applyHash();
+renderAll();
+window.addEventListener("hashchange", () => { applyHash(); renderAll(); });
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js").catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
