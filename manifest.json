@@ -1,0 +1,15 @@
+{
+  "name": "English Curriculum Toolkit — Hmood Primary Mixed School",
+  "short_name": "Curriculum Toolkit",
+  "description": "Content Analysis and Term Plan builder for Grades 1-6, First Semester.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0e2033",
+  "theme_color": "#0e2033",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
